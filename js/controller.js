@@ -15,7 +15,7 @@ function renderMemes() {
     var strHTMLs = memes.map(
         (meme) => `<img
         onclick="memeEditor(this)"
-        src="img/${meme.imgID}.jpg"
+        src="./img/${meme.imgID}.jpg"
         class="meme ${meme.imgID}"
     />`
     );
