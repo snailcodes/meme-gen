@@ -81,8 +81,19 @@ function addTextLine() {
                         <button class="line-${lineCounter}">⬅</button>
                         <button class="line-${lineCounter}">↔</button>
                         <button class="line-${lineCounter}" >➡</button>
-                        <button onclick="onChangeLineColor(event)"class="line-${lineCounter}">🖌</button>
-                        <button onclick="onChangeFillColor(event)"class="line-${lineCounter}">🎨</button>
+                        <input type="color"
+                                onchange="onChangeLineColor(event)"
+                                class="color-line-0"
+                                value="black">
+                                🖌
+                             </input>
+                            <input type="color"
+                                onchange="onChangeFillColor(event)"
+                                class="bcgColor-line-0"
+                                value="yellow"
+                            >
+                                🎨
+                        </input>
                     </div>`;
 
     lineCounter++;
@@ -112,9 +123,15 @@ function addText(ev) {
 function renderText(lineNum) {
     var text = getText(gCurrMemeId, lineNum);
     var pos = getPos(gCurrMemeId, lineNum);
-    var fontSize = getSize(gCurrMemeId, lineNum);
-    var fontFill = getFillColor(gCurrMemeId, lineNum);
-    var fontColor = getLineColor(gCurrMemeId, lineNum);
+
+    var fontSize = fontSize === null ? '12' : getSize(gCurrMemeId, lineNum);
+    var fontFill =
+        fontFill === null ? 'white' : getFillColor(gCurrMemeId, lineNum);
+    var fontColor =
+        fontColor === null ? 'black' : getLineColor(gCurrMemeId, lineNum);
+
+    console.log(fontColor);
+    console.log(fontFill);
 
     gCtx.lineWidth = 2;
     gCtx.strokeStyle = `${fontColor}`;

@@ -87,11 +87,13 @@ function updateMemeText(input, id, lineNum) {
 function increaseFont(id, lineNum) {
     var meme = findMemeId(id);
     meme.lines[lineNum].size++;
+    console.log(meme.lines[lineNum].size);
 }
 function decreaseFont(id, lineNum) {
     var meme = findMemeId(id);
     if (meme.lines[lineNum].size <= 0) return;
     meme.lines[lineNum].size--;
+    console.log(meme.lines[lineNum].size);
 }
 
 function changeLineCol(id, lineNum, color) {
