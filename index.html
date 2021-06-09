@@ -7,15 +7,17 @@
         <title>Meme Gen</title>
         <link rel="stylesheet" href="css/style.css" />
     </head>
-    <body onload="init()">
+    <body class="main-layout" onload="init()">
         <header class="flex main-layout">
-            <div class="logo">מעמע גענעראַטאָר</div>
+            <div class="logo">מיעמעס גענעראַטאָר</div>
             <div class="menu">☰</div>
         </header>
         <main class="main-container main-layout flex">
             <div class="editor hidden flex">
-                <canvas class="canvas" width="300" height="300"></canvas>
-                <aside class="editor-control flex">
+                <div class="canvas-container">
+                    <canvas class="canvas" width="300" height="300"></canvas>
+                </div>
+                <section class="editor-control flex">
                     <div class="text-line">
                         <form>
                             <input
@@ -23,34 +25,36 @@
                                 type="text"
                                 class="text-input"
                                 value=""
+                                class="text-input line-0"
                             />
                             <input
                                 onclick="addText(event)"
                                 type="button"
                                 value="Add Text"
-                                class="input-btn"
+                                class="input-btn line-0"
                             />
                         </form>
                         <button>↕</button>
-                        <button>➕</button>
+                        <button onclick="addTextLine()">➕</button>
                         <button>❌</button>
+
+                        <div class="editing-text">
+                            <button>⏫</button>
+                            <button>⏬</button>
+                            <button>⬅</button>
+                            <button>↔</button>
+                            <button>➡</button>
+                            <button>🎨</button>
+                        </div>
                     </div>
 
-                    <div class="editing-text">
-                        <button>⏫</button>
-                        <button>⏬</button>
-                        <button>⬅</button>
-                        <button>↔</button>
-                        <button>➡</button>
-                        <button>🎨</button>
-                    </div>
-                    <a
-                        href="#"
+                    <div class="additional-lines">  </div>
+
+                    <a href="#"
                         onclick="downloadCanvas(this)"
-                        download="file-name"
-                        >Download</a
-                    >
-                </aside>
+                        download="file-name">Download</a
+                    
+                </section>
             </div>
             <div class="additions">
                 <div class="search-bar">search bar placeholder</div>

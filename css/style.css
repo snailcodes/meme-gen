@@ -62,9 +62,8 @@ header {
 }
 
 .canvas {
-    grid-row: span 4;
-    grid-column: span 2;
     padding: 5px;
+    display: block;
 }
 
 input {
@@ -111,4 +110,8 @@ footer .logo {
     max-width: 375px;
     margin: 0 auto;
     border: 1px solid black;
+}
+
+.elMemeText {
+    border: 1px dotted blue;
 }

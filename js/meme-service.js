@@ -2,6 +2,7 @@
 
 var KEY = 'memes';
 var gMemes;
+var gCurrMemeText;
 
 createMemes();
 
@@ -15,9 +16,25 @@ function findMemeId(id) {
     });
 }
 
-function updateMemeText(input, id) {
+function updateNewLine(id) {
+    var meme = findMemeId(id);
+    var newline = {
+        txt: 'text',
+        isDrag: false,
+        size: 20,
+        align: 'center',
+        color: 'white',
+        pos: {
+            x: 125,
+            y: 250,
+        },
+    };
+    meme.lines.push(newline);
+}
+
+function updateMemeText(input, id, lineNum) {
     var meme = gMemes[id - 1];
-    meme.lines[0].txt = input;
+    meme.lines[lineNum].txt = input;
 }
 
 function createMeme(imgNum) {
@@ -28,9 +45,14 @@ function createMeme(imgNum) {
         lines: [
             {
                 txt: 'text',
+                isDrag: false,
                 size: 20,
                 align: 'center',
                 color: 'white',
+                pos: {
+                    x: 125,
+                    y: 40,
+                },
             },
         ],
     };
@@ -41,11 +63,13 @@ function createMemes() {
     if (!memes || !memes.length) {
         var memes = [];
         for (var i = 1; i < 19; i++) {
-            console.log(i);
+            // console.log(i);
             memes.push(createMeme(i));
         }
     }
+
     gMemes = memes;
+    console.log(gMemes);
     saveMemesToStorage();
 }
 
@@ -57,11 +81,13 @@ function displayMemes() {
     return gMemes;
 }
 
-function drawText(memeId, x = 130, y = 50) {
+function updateText(memeId, lineNum) {
     var meme = findMemeId(memeId);
-    console.log(meme);
-    var text = meme.lines[0].txt;
-    console.log(text);
+    var text = meme.lines[lineNum].txt;
+    var pos = meme.lines[lineNum].pos;
+    var x = pos.x;
+    var y = pos.y;
+
     gCtx.lineWidth = 2;
     // gCtx.strokeStyle = 'red'
     // gCtx.fillStyle = 'white'
@@ -69,4 +95,32 @@ function drawText(memeId, x = 130, y = 50) {
     // gCtx.textAlign = 'center'
     gCtx.fillText(text, x, y);
     gCtx.strokeText(text, x, y);
+}
+
+function getText(id) {
+    var meme = findMemeId(id);
+    gCurrMemeText = meme.lines[0];
+    // console.log(gCurrMemeText);
+    return meme.lines[0];
+}
+
+function isTextClicked(clickedPos) {
+    const { pos } = gCurrMemeText;
+    const distance = Math.sqrt(
+        (pos.x - clickedPos.x) ** 2 + (pos.y - clickedPos.y) ** 2
+    );
+    console.log(distance);
+    return distance <= gCurrMemeText.size;
+}
+
+function setTextDrag(isDrag) {
+    gCurrMemeText.isDrag = isDrag;
+}
+
+function moveText(dx, dy) {
+    console.log(dx, dy);
+    gCurrMemeText.pos.x += dx;
+    gCurrMemeText.pos.y += dy;
+    console.log(gCurrMemeText.pos.x);
+    console.log(gCurrMemeText.pos.y);
 }
