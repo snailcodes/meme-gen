@@ -23,7 +23,6 @@
                             <input
                                 placeholder="Enter Text"
                                 type="text"
-                                class="text-input"
                                 value=""
                                 class="text-input line-0"
                             />
@@ -39,12 +38,32 @@
                         <button>❌</button>
 
                         <div class="editing-text">
-                            <button>⏫</button>
-                            <button>⏬</button>
-                            <button>⬅</button>
-                            <button>↔</button>
-                            <button>➡</button>
-                            <button>🎨</button>
+                            <button
+                                class="line-0"
+                                onclick="onIncreaseFontSize(event)"
+                            >
+                                ⏫
+                            </button>
+                            <button
+                                class="line-0"
+                                onclick="onDecreaseFontSize(event)"
+                            >
+                                ⏬
+                            </button>
+                            <button class="line-0">⬅</button>
+                            <button class="line-0">↔</button>
+                            <button class="line-0">➡</button>
+                            <input type="color"
+                                onchange="onChangeLineColor(event)"
+                                class="color-line-0">
+                                🖌
+                             </input>
+                            <input type="color"
+                                onchange="onChangeFillColor(event)"
+                                class="bcgColor-line-0"
+                            >
+                                🎨
+                        </input>
                         </div>
                     </div>
 
@@ -72,7 +91,6 @@
     </body>
 
     <script src="./js/UTIL.js"></script>
-    <script src="./js/editor-services.js"></script>
     <script src="./js/meme-service.js"></script>
     <script src="./js/controller.js"></script>
 </html>

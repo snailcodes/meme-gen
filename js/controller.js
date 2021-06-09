@@ -76,12 +76,13 @@ function addTextLine() {
                     </div>
 
                     <div class="editing-text">
-                        <button>⏫</button>
-                        <button>⏬</button>
-                        <button>⬅</button>
-                        <button>↔</button>
-                        <button>➡</button>
-                        <button>🎨</button>
+                        <button class="line-${lineCounter}" onclick="onIncreaseFontSize(event)">⏫</button>
+                        <button class="line-${lineCounter}""onclick="onDecreaseFontSize(event)">⏬</button>
+                        <button class="line-${lineCounter}">⬅</button>
+                        <button class="line-${lineCounter}">↔</button>
+                        <button class="line-${lineCounter}" >➡</button>
+                        <button onclick="onChangeLineColor(event)"class="line-${lineCounter}">🖌</button>
+                        <button onclick="onChangeFillColor(event)"class="line-${lineCounter}">🎨</button>
                     </div>`;
 
     lineCounter++;
@@ -98,13 +99,31 @@ function getLineNum(ev) {
 function addText(ev) {
     ev.preventDefault();
     var lineNum = getLineNum(ev);
-    var input = document.querySelector('.text-input');
+    var str = '.line-' + lineNum;
+    console.log(str);
+    var input = document.querySelector(str);
+    console.log(input.value);
     updateMemeText(input.value, gCurrMemeId, lineNum);
+    console.log(lineNum);
     renderText(lineNum);
 }
 
+//TODO - MOVING AND CHANGING ISSUE IS SOMEWHERE HERE
 function renderText(lineNum) {
-    updateText(gCurrMemeId, lineNum);
+    var text = getText(gCurrMemeId, lineNum);
+    var pos = getPos(gCurrMemeId, lineNum);
+    var fontSize = getSize(gCurrMemeId, lineNum);
+    var fontFill = getFillColor(gCurrMemeId, lineNum);
+    var fontColor = getLineColor(gCurrMemeId, lineNum);
+
+    gCtx.lineWidth = 2;
+    gCtx.strokeStyle = `${fontColor}`;
+    gCtx.fillStyle = `${fontFill}`;
+    fontSize += 'px';
+    gCtx.font = `${fontSize}  Impact`;
+    // // gCtx.textAlign = 'center'
+    gCtx.fillText(text, pos.x, pos.y);
+    gCtx.strokeText(text, pos.x, pos.y);
 }
 
 function addListeners() {
@@ -138,7 +157,9 @@ function onDown(ev) {
 }
 
 function onMove(ev) {
-    const text = getText(gCurrMemeId);
+    var lineNum = getLineNum(ev);
+
+    const text = getTextObject(gCurrMemeId, lineNum);
     if (text.isDrag) {
         const pos = getEvPos(ev);
         const dx = pos.x - gStartPos.x;
@@ -170,9 +191,10 @@ function getEvPos(ev) {
     return pos;
 }
 
+//TODO - BROKEN BECAUSE RENDERTEXT NOW NEEDS TO GET LINENUM
 function renderCanvas() {
     gCtx.save();
-    var elMeme = findMemeId(gCurrMemeId);
+    // var elMeme = findMemeId(gCurrMemeId);
     // console.log(elMeme);
     // drawImgFromSameDomain(elMeme);
     renderText();
@@ -188,4 +210,38 @@ function downloadCanvas(elLink) {
     const data = gElCanvas.toDataURL();
     elLink.href = data;
     elLink.download = 'my-img.jpg';
+}
+
+function onIncreaseFontSize(ev) {
+    var lineNum = getLineNum(ev);
+    increaseFont(gCurrMemeId, lineNum);
+    renderText(lineNum);
+}
+
+function onDecreaseFontSize(ev) {
+    var lineNum = getLineNum(ev);
+    decreaseFont(gCurrMemeId, lineNum);
+    renderText(lineNum);
+}
+
+function onChangeLineColor(ev) {
+    var lineNum = getLineNum(ev);
+    var className = '.color-line-' + lineNum;
+    var lineColor = document.querySelector(className);
+    // lineColor.addEventListener('input', updateValue);
+    // lineColor.select();
+    console.log('line is', lineColor.value);
+    changeLineCol(gCurrMemeId, lineNum, lineColor.value);
+    renderText(lineNum);
+}
+
+function onChangeFillColor(ev) {
+    var lineNum = getLineNum(ev);
+    var className = '.bcgColor-line-' + lineNum;
+    var fillColor = document.querySelector(className);
+    // fillColor.addEventListener('input', updateValue);
+    // fillColor.select();
+    console.log(fillColor.value);
+    changeFillCol(gCurrMemeId, lineNum, fillColor.value);
+    renderText(lineNum);
 }

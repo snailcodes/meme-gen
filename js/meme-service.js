@@ -24,17 +24,13 @@ function updateNewLine(id) {
         size: 20,
         align: 'center',
         color: 'white',
+        fillColor: 'blue',
         pos: {
             x: 125,
             y: 250,
         },
     };
     meme.lines.push(newline);
-}
-
-function updateMemeText(input, id, lineNum) {
-    var meme = gMemes[id - 1];
-    meme.lines[lineNum].txt = input;
 }
 
 function createMeme(imgNum) {
@@ -49,6 +45,7 @@ function createMeme(imgNum) {
                 size: 20,
                 align: 'center',
                 color: 'white',
+                fillColor: 'blue',
                 pos: {
                     x: 125,
                     y: 40,
@@ -81,23 +78,57 @@ function displayMemes() {
     return gMemes;
 }
 
-function updateText(memeId, lineNum) {
-    var meme = findMemeId(memeId);
-    var text = meme.lines[lineNum].txt;
-    var pos = meme.lines[lineNum].pos;
-    var x = pos.x;
-    var y = pos.y;
-
-    gCtx.lineWidth = 2;
-    // gCtx.strokeStyle = 'red'
-    // gCtx.fillStyle = 'white'
-    gCtx.font = '40px Impact';
-    // gCtx.textAlign = 'center'
-    gCtx.fillText(text, x, y);
-    gCtx.strokeText(text, x, y);
+function updateMemeText(input, id, lineNum) {
+    // var meme = gMemes[id - 1];
+    var meme = findMemeId(id);
+    meme.lines[lineNum].txt = input;
 }
 
-function getText(id) {
+function increaseFont(id, lineNum) {
+    var meme = findMemeId(id);
+    meme.lines[lineNum].size++;
+}
+function decreaseFont(id, lineNum) {
+    var meme = findMemeId(id);
+    if (meme.lines[lineNum].size <= 0) return;
+    meme.lines[lineNum].size--;
+}
+
+function changeLineCol(id, lineNum, color) {
+    var meme = findMemeId(id);
+    meme.lines[lineNum].color = color;
+}
+function changeFillCol(id, lineNum, color) {
+    var meme = findMemeId(id);
+    meme.lines[lineNum].fillColor = color;
+}
+
+function getLineColor(memeId, lineNum) {
+    var meme = findMemeId(memeId);
+    return meme.lines[lineNum].color;
+}
+
+function getFillColor(memeId, lineNum) {
+    var meme = findMemeId(memeId);
+    return meme.lines[lineNum].fillColor;
+}
+
+function getText(memeId, lineNum) {
+    var meme = findMemeId(memeId);
+    return meme.lines[lineNum].txt;
+}
+
+function getSize(memeId, lineNum) {
+    var meme = findMemeId(memeId);
+    return meme.lines[lineNum].size;
+}
+
+function getPos(memeId, lineNum) {
+    var meme = findMemeId(memeId);
+    return meme.lines[lineNum].pos;
+}
+
+function getTextObject(id) {
     var meme = findMemeId(id);
     gCurrMemeText = meme.lines[0];
     // console.log(gCurrMemeText);
