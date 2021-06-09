@@ -7,40 +7,65 @@
         <title>Meme Gen</title>
         <link rel="stylesheet" href="css/style.css" />
     </head>
-    <body flex>
-        <header class="flex">
+    <body onload="init()">
+        <header class="flex main-layout">
             <div class="logo">מעמע גענעראַטאָר</div>
             <div class="menu">☰</div>
         </header>
-        <main class="main-container flex">
-            <div class="search-bar">search bar placeholder</div>
-            <div class="tag-words">tag words placeholder</div>
-            <div class="gallery grid">
-                <img src="img\1.jpg" class="meme item1" />
-                <img src="img\2.jpg" class="meme item2" />
-                <img src="img\3.jpg" class="meme item3" />
-                <img src="img\4.jpg" class="meme item4" />
-                <img src="img\5.jpg" class="meme item5" />
-                <img src="img\6.jpg" class="meme item6" />
-                <img src="img\7.jpg" class="meme item7" />
-                <img src="img\8.jpg" class="meme item8" />
-                <img src="img\9.jpg" class="meme item9" />
-                <img src="img\10.jpg" class="meme item10" />
-                <img src="img\11.jpg" class="meme item11" />
-                <img src="img\12.jpg" class="meme item12" />
-                <img src="img\13.jpg" class="meme item13" />
-                <img src="img\14.jpg" class="meme item14" />
-                <img src="img\15.jpg" class="meme item15" />
-                <img src="img\16.jpg" class="meme item16" />
-                <img src="img\17.jpg" class="meme item17" />
-                <img src="img\18.jpg" class="meme item18" />
+        <main class="main-container main-layout flex">
+            <div class="editor hidden flex">
+                <canvas class="canvas" width="300" height="300"></canvas>
+                <aside class="editor-control flex">
+                    <div class="text-line">
+                        <form>
+                            <input
+                                placeholder="Enter Text"
+                                type="text"
+                                class="text-input"
+                                value=""
+                            />
+                            <input
+                                onclick="addText(event)"
+                                type="button"
+                                value="Add Text"
+                                class="input-btn"
+                            />
+                        </form>
+                        <button>↕</button>
+                        <button>➕</button>
+                        <button>❌</button>
+                    </div>
+
+                    <div class="editing-text">
+                        <button>⏫</button>
+                        <button>⏬</button>
+                        <button>⬅</button>
+                        <button>↔</button>
+                        <button>➡</button>
+                        <button>🎨</button>
+                    </div>
+                    <a
+                        href="#"
+                        onclick="downloadCanvas(this)"
+                        download="file-name"
+                        >Download</a
+                    >
+                </aside>
             </div>
+            <div class="additions">
+                <div class="search-bar">search bar placeholder</div>
+                <div class="tag-words">tag words placeholder</div>
+            </div>
+            <div class="gallery-grid"></div>
         </main>
-        <footer>
+        <footer class="main-layout">
             <div class="logo">מעמע גענעראַטאָר</div>
             <div class="terms">all rights are somewhat reserved</div>
         </footer>
     </body>
 
+    <script src="/js/UTIL.js"></script>
+    <script src="/js/editor-services.js"></script>
+    <script src="/js/meme-service.js"></script>
     <script src="/js/controller.js"></script>
 </html>
