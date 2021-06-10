@@ -14,7 +14,7 @@
         </header>
         <main class="main-container main-layout flex">
             <div class="editor hidden flex">
-                <div class="canvas-container">
+                <div class="canvas-container hidden main-layout ">
                     <canvas class="canvas" width="300" height="300"></canvas>
                 </div>
                 <section class="editor-control flex">
@@ -24,13 +24,13 @@
                                 placeholder="Enter Text"
                                 type="text"
                                 value=""
-                                class="text-input line-0"
+                                class="input-line-0"
                             />
                             <input
                                 onclick="addText(event)"
                                 type="button"
                                 value="Add Text"
-                                class="input-btn line-0"
+                                class="input-btn-line-0"
                             />
                         </form>
                         <button>↕</button>
@@ -39,30 +39,30 @@
 
                         <div class="editing-text">
                             <button
-                                class="line-0"
+                                class="increase-line-0"
                                 onclick="onIncreaseFontSize(event)"
                             >
                                 ⏫
                             </button>
                             <button
-                                class="line-0"
+                                class="decrease-line-0"
                                 onclick="onDecreaseFontSize(event)"
                             >
                                 ⏬
                             </button>
-                            <button class="line-0">⬅</button>
-                            <button class="line-0">↔</button>
-                            <button class="line-0">➡</button>
+                            <button onclick="onRightAlign(event)" class="left-line-0">⬅</button>
+                            <button onclick="onCenterAlign(event)" class="center-line-0">↔</button>
+                            <button onclick="onLeftAlign(event)" class="right-line-0">➡</button>
                             <input type="color"
                                 onchange="onChangeLineColor(event)"
                                 class="color-line-0"
-                                value="black">
+                                value="#000000">
                                 🖌
                              </input>
                             <input type="color"
                                 onchange="onChangeFillColor(event)"
                                 class="bcgColor-line-0"
-                                value="yellow"
+                                value="#FFFFFF"
                             >
                                 🎨
                         </input>

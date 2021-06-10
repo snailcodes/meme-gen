@@ -4,8 +4,6 @@ var KEY = 'memes';
 var gMemes;
 var gCurrMemeText;
 
-createMemes();
-
 function getMemes() {
     return gMemes;
 }
@@ -16,24 +14,25 @@ function findMemeId(id) {
     });
 }
 
-function updateNewLine(id) {
+function updateNewLine(id, centerPos) {
     var meme = findMemeId(id);
     var newline = {
         txt: 'text',
         isDrag: false,
         size: 20,
         align: 'center',
-        color: 'white',
-        fillColor: 'blue',
+        color: '#000000',
+        fillColor: '#FFFFFF',
         pos: {
-            x: 125,
+            x: centerPos.x,
             y: 250,
         },
     };
     meme.lines.push(newline);
 }
 
-function createMeme(imgNum) {
+function createMeme(imgNum, centerPos) {
+    console.log(centerPos);
     return {
         imgID: imgNum,
         selectedLineIdx: 0,
@@ -44,10 +43,10 @@ function createMeme(imgNum) {
                 isDrag: false,
                 size: 20,
                 align: 'center',
-                color: 'white',
-                fillColor: 'blue',
+                color: '#000000',
+                fillColor: '#FFFFFF',
                 pos: {
-                    x: 125,
+                    x: centerPos.x,
                     y: 40,
                 },
             },
@@ -55,13 +54,13 @@ function createMeme(imgNum) {
     };
 }
 
-function createMemes() {
+function createMemes(centerPos) {
     var memes = loadFromStorage(KEY);
     if (!memes || !memes.length) {
         var memes = [];
         for (var i = 1; i < 19; i++) {
             // console.log(i);
-            memes.push(createMeme(i));
+            memes.push(createMeme(i, centerPos));
         }
     }
 
@@ -102,7 +101,14 @@ function changeLineCol(id, lineNum, color) {
 }
 function changeFillCol(id, lineNum, color) {
     var meme = findMemeId(id);
-    meme.lines[lineNum].fillColor = color;
+    meme.lines[lineNum] = color;
+}
+
+function changeAlign(id, lineNum, updatedAlign) {
+    var meme = findMemeId(id);
+    // meme.lines[lineNum].pos.x = updatedAlign;
+    meme.lines[lineNum].align = updatedAlign;
+    console.log(meme.lines[lineNum].align);
 }
 
 function getLineColor(memeId, lineNum) {
@@ -118,6 +124,11 @@ function getFillColor(memeId, lineNum) {
 function getText(memeId, lineNum) {
     var meme = findMemeId(memeId);
     return meme.lines[lineNum].txt;
+}
+
+function getFontAlign(memeId, lineNum) {
+    var meme = findMemeId(memeId);
+    return meme.lines[lineNum].pos.x;
 }
 
 function getSize(memeId, lineNum) {
