@@ -2,10 +2,15 @@
     box-sizing: border-box;
 }
 
-body {
+html {
     height: 100%;
-    background-color: white;
+}
+
+/* height 100% tricky here - move to media desktop mediaquery? */
+body {
+    background-color: gainsboro;
     border: 1px solid black;
+    /* height: 100%; */
 }
 
 img {
@@ -15,23 +20,26 @@ img {
 }
 
 header {
-    background-color: #ff7f00;
-    width: 100%;
     height: 2.031rem;
+    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+    background-color: #ff7f00;
+    border-bottom: 1px solid black;
+    width: 100%;
 }
 
-header {
+.header-contents {
     justify-content: space-between;
     padding: 0.2rem;
     color: white;
-    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
 }
 
 .main-container {
-    background-color: white;
+    background-color: gainsboro;
     justify-content: center;
     align-items: center;
     flex-direction: column;
+    padding: 5px;
+    height: 100%;
 }
 
 /* TODO: GRID??? */
@@ -41,10 +49,16 @@ header {
     grid-template-columns: repeat(4, 1fr);
     max-width: 100%;
     gap: 3px;
-    background-color: lightgray;
+    background-color: whitesmoke;
+    border-radius: 8px;
     /* padding: 0.8rem; */
     padding: 1rem 0.3rem;
     margin-bottom: 1rem;
+}
+
+.more-lines-controller {
+    justify-content: space-evenly;
+    padding-top: 2px;
 }
 
 .additions {
@@ -57,23 +71,35 @@ header {
 
 .editor-control {
     flex-direction: column;
-    column-gap: 5px;
     justify-content: center;
+    text-align: center;
+    padding-top: 5px;
 }
 
 .canvas-container {
-    width: 60vw;
-    height: 80vh;
+    width: 100%;
+    /* height: 80vh; */
     background-color: red;
 }
 
 .canvas {
-    padding: 5px;
     display: block;
+    height: 100%;
+    width: 100%;
 }
 
-input {
+.editing-text input {
     height: 20px;
+    width: 25px;
+    /* border: none; */
+    border: 1px dotted rgb(67, 107, 107);
+}
+
+button {
+    background-color: white;
+    border: none;
+    border-radius: 8px;
+    border: 1px dotted rgb(67, 107, 107);
 }
 
 .editor-control button {
@@ -86,10 +112,14 @@ input {
 
 footer {
     background-color: #ff7f00;
-    width: 100%;
     height: 6.437rem;
     color: white;
     font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+    width: 100%;
+}
+
+.footer-contents {
+    border-top: 1px solid black;
 }
 
 footer .logo {
@@ -115,9 +145,7 @@ footer .logo {
 .main-layout {
     max-width: 375px;
     margin: 0 auto;
-    border: 1px solid black;
-}
-
-.elMemeText {
-    border: 1px dotted blue;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 }

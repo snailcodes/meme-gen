@@ -27,6 +27,10 @@ function updateNewLine(id, centerPos) {
             x: centerPos.x,
             y: 250,
         },
+        endpos: {
+            x: centerPos.x + 20,
+            y: 250 + 20,
+        },
     };
     meme.lines.push(newline);
 }
@@ -47,6 +51,10 @@ function createMeme(imgNum) {
                 pos: {
                     x: 130,
                     y: 40,
+                },
+                endpos: {
+                    x: 130 + 20,
+                    y: 40 + 20,
                 },
             },
         ],
@@ -78,12 +86,11 @@ function displayMemes() {
 
 function setCenter(id, lineNum, centerX) {
     var meme = findMemeId(id);
-    meme.lines[lineNum].pos.x = centerX;
+    meme.lines[lineNum].pos.x = centerX - meme.lines[lineNum].size;
 }
 
 function setHeight(id, lineNum, centerY, maxY) {
     var meme = findMemeId(id);
-
     switch (lineNum) {
         case '0':
             var newYPos = 0 + meme.lines[lineNum].size;
@@ -98,7 +105,6 @@ function setHeight(id, lineNum, centerY, maxY) {
                 centerY + meme.lines[lineNum].size * lineNum;
             break;
     }
-    console.log(meme.lines[lineNum].pos);
 }
 
 function updateMemeText(input, id, lineNum) {
@@ -107,17 +113,24 @@ function updateMemeText(input, id, lineNum) {
     meme.lines[lineNum].txt = input;
 }
 
-function increaseFont(id, lineNum) {
-    var meme = findMemeId(id);
-    meme.lines[lineNum].size++;
-    console.log(meme.lines[lineNum].size);
-}
-function decreaseFont(id, lineNum) {
+function updateSize(id, lineNum, diff) {
     var meme = findMemeId(id);
     if (meme.lines[lineNum].size <= 0) return;
-    meme.lines[lineNum].size--;
+    meme.lines[lineNum].size += diff;
     console.log(meme.lines[lineNum].size);
 }
+
+// function increaseFont(id, lineNum) {
+//     var meme = findMemeId(id);
+//     meme.lines[lineNum].size++;
+//     console.log(meme.lines[lineNum].size);
+// }
+// function decreaseFont(id, lineNum) {
+//     var meme = findMemeId(id);
+//     if (meme.lines[lineNum].size <= 0) return;
+//     meme.lines[lineNum].size--;
+//     console.log(meme.lines[lineNum].size);
+// }
 
 function changeLineCol(id, lineNum, color) {
     var meme = findMemeId(id);
@@ -125,7 +138,7 @@ function changeLineCol(id, lineNum, color) {
 }
 function changeFillCol(id, lineNum, color) {
     var meme = findMemeId(id);
-    meme.lines[lineNum] = color;
+    meme.lines[lineNum].color = color;
 }
 
 function changeAlign(id, lineNum, updatedAlign) {
@@ -141,6 +154,7 @@ function getLineColor(memeId, lineNum) {
 }
 
 function getFillColor(memeId, lineNum) {
+    console.log('sanity');
     var meme = findMemeId(memeId);
     return meme.lines[lineNum].fillColor;
 }
@@ -150,9 +164,16 @@ function getText(memeId, lineNum) {
     return meme.lines[lineNum].txt;
 }
 
+function getAllLines(memeId) {
+    var meme = findMemeId(memeId);
+    console.log(meme);
+    return meme.lines;
+}
+
 function getFontAlign(memeId, lineNum) {
     var meme = findMemeId(memeId);
-    return meme.lines[lineNum].pos.x;
+    console.log('weird');
+    // return meme.lines[lineNum].pos.x;
 }
 
 function getSize(memeId, lineNum) {
@@ -174,10 +195,10 @@ function getTextObject(id) {
 
 function isTextClicked(clickedPos) {
     const { pos } = gCurrMemeText;
-    const distance = Math.sqrt(
-        (pos.x - clickedPos.x) ** 2 + (pos.y - clickedPos.y) ** 2
-    );
-    console.log(distance);
+    console.log(clickedPos);
+    console.log([pos]);
+    const distance = (pos.x - clickedPos.x) * 2 + (pos.y - clickedPos.y) * 2;
+    console.log('distance', distance);
     return distance <= gCurrMemeText.size;
 }
 
@@ -186,9 +207,6 @@ function setTextDrag(isDrag) {
 }
 
 function moveText(dx, dy) {
-    console.log(dx, dy);
     gCurrMemeText.pos.x += dx;
     gCurrMemeText.pos.y += dy;
-    console.log(gCurrMemeText.pos.x);
-    console.log(gCurrMemeText.pos.y);
 }

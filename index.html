@@ -8,9 +8,11 @@
         <link rel="stylesheet" href="css/style.css" />
     </head>
     <body class="main-layout" onload="init()">
-        <header class="flex main-layout">
+        <header class=" main-layout">
+            <div class="header-contents flex">
             <div class="logo">מיעמעס גענעראַטאָר</div>
             <div class="menu">☰</div>
+        </div>
         </header>
         <main class="main-container main-layout flex">
             <div class="editor hidden flex">
@@ -34,7 +36,7 @@
                             />
                         </form>
                         
-                        <div class="more-lines-controller hidden">
+                        <div class="more-lines-controller flex hidden">
                         <button>↕</button>
                         <button onclick="addTextLine()">➕</button>
                         <button>❌</button>
@@ -42,15 +44,15 @@
                         <div class="editing-text">
                             <button
                                 class="increase-line-0"
-                                onclick="onIncreaseFontSize(event)"
+                                onclick="onChangeFont(event,1)"
                             >
-                                ⏫
+                            ⇑
                             </button>
                             <button
                                 class="decrease-line-0"
-                                onclick="onDecreaseFontSize(event)"
+                                onclick="onChangeFont(event,-1)"
                             >
-                                ⏬
+                                ⇓
                             </button>
                             <button onclick="onRightAlign(event)" class="left-line-0">⬅</button>
                             <button onclick="onCenterAlign(event)" class="center-line-0">↔</button>
@@ -89,8 +91,10 @@
         </main>
 
         <footer class="main-layout">
+            <div class="footer-contents">
             <div class="logo">מעמע גענעראַטאָר</div>
             <div class="terms">all rights are somewhat reserved</div>
+        </div>
         </footer>
     </body>
 

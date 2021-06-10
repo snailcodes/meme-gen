@@ -48,6 +48,7 @@ function memeEditor(elMeme) {
     gElCanvas = document.querySelector('.canvas');
     gCtx = gElCanvas.getContext('2d');
     resizeCanvas();
+    gCenter = { x: gElCanvas.width / 2, y: gElCanvas.height / 2 };
     addListeners();
 
     drawImgFromSameDomain();
@@ -89,8 +90,8 @@ function addTextLine() {
                     </div>
 
                     <div class="editing-text">
-                        <button class="increase-line-${gLineCounter}" onclick="onIncreaseFontSize(event)">⏫</button>
-                        <button class="decrease-line-${gLineCounter}""onclick="onDecreaseFontSize(event)">⏬</button>
+                        <button class="increase-line-${gLineCounter}" onclick="onChangeFont(event,1)">⏫</button>
+                        <button class="decrease-line-${gLineCounter}""onclick="onChangeFont(event,-1)">⏬</button>
                         <button class="left-line-${gLineCounter}">⬅</button>
                         <button class="center-line-${gLineCounter}">↔</button>
                         <button class="right-line-${gLineCounter}" >➡</button>
@@ -125,7 +126,6 @@ function addText(ev) {
     var lineNum = getLineNum(ev);
     var str = '.input-line-' + lineNum;
     var input = document.querySelector(str);
-    gCenter = { x: gElCanvas.width / 2, y: gElCanvas.height / 2 };
 
     setCenter(gCurrMemeId, lineNum, gCenter.x);
     setHeight(gCurrMemeId, lineNum, gCenter.y, gElCanvas.height);
@@ -135,25 +135,43 @@ function addText(ev) {
 }
 
 //TODO - MOVING AND CHANGING ISSUE IS SOMEWHERE HERE
-function renderText(lineNum) {
-    var text = getText(gCurrMemeId, lineNum);
-    var pos = getPos(gCurrMemeId, lineNum);
+//TODO - ALIGN NOT FUNCTIONING, IF DON'T GET TO IT BY 20:00 - REMOVE AND KEEP FOR SAT
+function renderText() {
+    // var text = getText(gCurrMemeId, lineNum);
+    // var pos = getPos(gCurrMemeId, lineNum);
+    // var fontSize = getSize(gCurrMemeId, lineNum);
+    // var fontFill = getFillColor(gCurrMemeId, lineNum);
+    // var fontColor = getLineColor(gCurrMemeId, lineNum);
+    // var fontAlign = getFontAlign(gCurrMemeId, lineNum);
 
-    var fontSize = getSize(gCurrMemeId, lineNum);
-    var fontFill = getFillColor(gCurrMemeId, lineNum);
+    var memeLines = getAllLines(gCurrMemeId);
+    console.log(memeLines);
+    for (var i = 0; i < memeLines.length; i++) {
+        var text = getText(gCurrMemeId, i);
+        var pos = getPos(gCurrMemeId, i);
+        var fontSize = getSize(gCurrMemeId, i);
+        var fontFill = getFillColor(gCurrMemeId, i);
+        var fontColor = getLineColor(gCurrMemeId, i);
+        // var fontAlign = getFontAlign(gCurrMemeId, i);
 
-    var fontColor = getLineColor(gCurrMemeId, lineNum);
+        gCtx.lineWidth = 2;
+        gCtx.strokeStyle = `${fontColor}`;
+        gCtx.fillStyle = `${fontFill}`;
+        fontSize += 'px';
+        gCtx.font = `${fontSize}  Impact`;
+        // gCtx.textAlign = `${fontAlign}`;
+        gCtx.strokeText(text, pos.x, pos.y);
+        gCtx.fillText(text, pos.x, pos.y);
+    }
 
-    var fontAlign = getFontAlign(gCurrMemeId, lineNum);
-
-    gCtx.lineWidth = 2;
-    gCtx.strokeStyle = `${fontColor}`;
-    gCtx.fillStyle = `${fontFill}`;
-    fontSize += 'px';
-    gCtx.font = `${fontSize}  Impact`;
-    gCtx.textAlign = `${fontAlign}`;
-    gCtx.fillText(text, pos.x, pos.y);
-    gCtx.strokeText(text, pos.x, pos.y);
+    // gCtx.lineWidth = 2;
+    // gCtx.strokeStyle = `${fontColor}`;
+    // gCtx.fillStyle = `${fontFill}`;
+    // fontSize += 'px';
+    // gCtx.font = `${fontSize}  Impact`;
+    // gCtx.textAlign = `${fontAlign}`;
+    // gCtx.fillText(text, pos.x, pos.y);
+    // gCtx.strokeText(text, pos.x, pos.y);
 }
 
 function addListeners() {
@@ -221,17 +239,6 @@ function getEvPos(ev) {
     return pos;
 }
 
-//TODO - BROKEN BECAUSE RENDERTEXT NOW NEEDS TO GET LINENUM
-//consider relationship between render text and render canvas??
-// function renderCanvas() {
-//     gCtx.save();
-//     // var elMeme = findMemeId(gCurrMemeId);
-//     // console.log(elMeme);
-//     // drawImgFromSameDomain(elMeme);
-//     renderText();
-//     gCtx.restore();
-// }
-
 function resizeCanvas() {
     var elContainer = document.querySelector('.canvas-container');
     gElCanvas.width = elContainer.offsetWidth;
@@ -243,17 +250,25 @@ function downloadCanvas(elLink) {
     elLink.download = 'my-img.jpg';
 }
 
-function onIncreaseFontSize(ev) {
+// function onIncreaseFontSize(ev) {
+//     var lineNum = getLineNum(ev);
+//     increaseFont(gCurrMemeId, lineNum);
+//     renderText(lineNum);
+// }
+
+// function onDecreaseFontSize(ev) {
+//     var lineNum = getLineNum(ev);
+//     decreaseFont(gCurrMemeId, lineNum);
+//     renderText(lineNum);
+// }
+
+function onChangeFont(ev,diff) {
     var lineNum = getLineNum(ev);
-    increaseFont(gCurrMemeId, lineNum);
+    updateSize(gCurrMemeId, lineNum,diff);
     renderText(lineNum);
 }
 
-function onDecreaseFontSize(ev) {
-    var lineNum = getLineNum(ev);
-    decreaseFont(gCurrMemeId, lineNum);
-    renderText(lineNum);
-}
+ 
 
 function onChangeLineColor(ev) {
     var lineNum = getLineNum(ev);
@@ -261,9 +276,10 @@ function onChangeLineColor(ev) {
     var lineColor = document.querySelector(className);
     // lineColor.addEventListener('input', updateValue);
     // lineColor.select();
-    console.log('line is', lineColor.value);
+    // console.log('line is', lineColor.value);
     changeLineCol(gCurrMemeId, lineNum, lineColor.value);
-    renderText(lineNum);
+    // renderText(lineNum);
+    renderText();
 }
 
 function onChangeFillColor(ev) {
@@ -272,9 +288,10 @@ function onChangeFillColor(ev) {
     var fillColor = document.querySelector(className);
     // fillColor.addEventListener('input', updateValue);
     // fillColor.select();
-    console.log(fillColor.value);
+    console.log('fill is', fillColor.value);
     changeFillCol(gCurrMemeId, lineNum, fillColor.value);
-    renderText(lineNum);
+    // renderText(lineNum);
+    renderText();
 }
 
 function onRightAlign(ev) {
