@@ -37,8 +37,8 @@ function memeEditor(elMeme) {
     var elEditor = document.querySelector('.editor');
     var elContainer = document.querySelector('.canvas-container');
 
-    elSearch.classList.add('hidden');
-    elTagWords.classList.add('hidden');
+    // elSearch.classList.add('hidden');
+    // elTagWords.classList.add('hidden');
     elGallery.classList.add('hidden');
     elEditor.classList.remove('hidden');
     elContainer.classList.remove('hidden');
@@ -109,9 +109,7 @@ function addTextLine() {
                     <div class="editing-text">
                         <button class="increase-line-${gLineCounter}" onclick="onChangeFont(event,1)">⇑</button>
                         <button class="decrease-line-${gLineCounter}" onclick="onChangeFont(event,-1)">⇓</button>
-                        <button class="left-line-${gLineCounter}">⬅</button>
-                        <button class="center-line-${gLineCounter}">↔</button>
-                        <button class="right-line-${gLineCounter}" >➡</button>
+                     
                         <input type="color"
                                 onchange="onChangeLineColor(event)"
                                 class="color-line-${gLineCounter}"
@@ -131,6 +129,11 @@ function addTextLine() {
     updateNewLine(gCurrMemeId, gCenter);
     elTextSection.innerHTML += strHTML;
 }
+
+//   <button class="left-line-${gLineCounter}">⬅</button>
+// {/* <button class="center-line-${gLineCounter}">↔</button> */}
+
+/* <button class="right-line-${gLineCounter}" >➡</button> */
 
 function getLineNum(ev) {
     var str = ev.target.classList;
@@ -171,21 +174,23 @@ function drawText(text, x, y, fontSize, fontFill, fontColor, idx) {
     gCtx.lineWidth = 1;
     gCtx.strokeStyle = `${fontColor}`;
     gCtx.fillStyle = `${fontFill}`;
+
     fontSize += 'px';
     gCtx.font = `${fontSize}  Impact`;
     var recWidth = gCtx.measureText(text).width;
     gCtx.textBaseline = 'top';
     gCtx.strokeText(text, x, y);
     gCtx.fillText(text, x, y);
-    drawTxtBorder(x, y, recWidth, recHeight, idx);
+    saveTxtBorder(x, y, recWidth, recHeight, idx, gCurrMemeId);
+    // drawTxtBorder(x, y, recWidth, recHeight, idx);
 }
 
-function drawTxtBorder(x, y, width, height, idx) {
-    gCtx.lineWidth = 0.5;
-    gCtx.strokeStyle = 'black';
-    gCtx.strokeRect(x, y, width, height);
-    saveTxtBorder(x, y, width, height, idx, gCurrMemeId);
-}
+// function drawTxtBorder(x, y, width, height, idx) {
+//     // gCtx.lineWidth = 0.5;
+//     // gCtx.strokeStyle = 'black';
+//     gCtx.strokeRect(x, y, width, height);
+//     saveTxtBorder(x, y, width, height, idx, gCurrMemeId);
+// }
 
 function addListeners() {
     addMouseListeners();
@@ -211,13 +216,15 @@ function onDown(ev) {
     const pos = getEvPos(ev);
 
     if (!isTextClicked(pos)) return;
-    setTextDrag(true);
+
+    // setTextDrag(true);
     gStartPos = pos;
     document.body.style.cursor = 'grabbing';
 }
 
 function onMove(ev) {
     var lineNum = getLineNum(ev);
+    // console.log(lineNum);
 
     const text = getTextObject(gCurrMemeId, lineNum);
     if (text.isDrag) {
@@ -256,11 +263,6 @@ function resizeCanvas() {
     gElCanvas.width = elContainer.offsetWidth;
     gElCanvas.height = elContainer.offsetHeight;
     drawImg();
-}
-function downloadCanvas(elLink) {
-    const data = gElCanvas.toDataURL();
-    elLink.href = data;
-    elLink.download = 'my-img.jpg';
 }
 
 function onChangeFont(ev, diff) {
@@ -313,4 +315,11 @@ function onLeftAlign(ev) {
 
 function getMeme() {
     return gCurrMemeId;
+}
+
+function downloadCanvas(elLink) {
+    // ev.preventDefault();
+    const data = gElCanvas.toDataURL();
+    elLink.href = data;
+    elLink.download = 'my-meme.jpg';
 }

@@ -107,6 +107,15 @@ button {
     height: 40px;
 }
 
+.download-link {
+    background-color: whitesmoke;
+    border-radius: 8px;
+    color: black;
+    border: 1px solid black;
+    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+    text-decoration: none;
+}
+
 .editing-text {
     padding: 10px;
 }

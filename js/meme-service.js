@@ -133,7 +133,9 @@ function changeLineCol(id, lineNum, color) {
 }
 function changeFillCol(id, lineNum, color) {
     var meme = findMemeId(id);
-    meme.lines[lineNum].color = color;
+    console.log(meme);
+    meme.lines[lineNum].fillColor = color;
+    console.log(meme);
 }
 
 function changeAlign(id, lineNum, updatedAlign) {
@@ -186,7 +188,6 @@ function getTextObject(id) {
 }
 
 function isTextClicked(clickedPos) {
-    // const { pos } = gCurrMemeText;
     var id = getMeme();
     var meme = findMemeId(id);
     for (var i = 0; i < meme.lines.length; i++) {
@@ -194,14 +195,28 @@ function isTextClicked(clickedPos) {
         var yStart = meme.lines[i].border.y;
         var xEnd = xStart + meme.lines[i].border.width;
         var yEnd = yStart + meme.lines[i].border.height;
-        if (clickedPos.x < xStart || clickedPos.x > xEnd) return;
-        if (clickedPos.y < yStart || clickedPos.y > yEnd) return;
-        return true;
+        // if (clickedPos.x < xStart || clickedPos.x > xEnd) break;
+        // if (clickedPos.y < yStart || clickedPos.y > yEnd) break;
+
+        if (
+            clickedPos.x > xStart &&
+            clickedPos.x < xEnd &&
+            clickedPos.y > yStart &&
+            clickedPos.y < yEnd
+        ) {
+            meme.lines[i].isDrag = true;
+            return true;
+        }
     }
 }
 
-function setTextDrag(isDrag) {
-    gCurrMemeText.isDrag = isDrag;
+function setTextDrag() {
+    var id = getMeme();
+    var meme = findMemeId(id);
+    for (var i = 0; i < meme.lines.length; i++) {
+        meme.lines[i].isDrag = false;
+    }
+    // gCurrMemeText.isDrag = isDrag;
 }
 
 function moveText(dx, dy) {
