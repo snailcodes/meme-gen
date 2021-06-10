@@ -8,6 +8,7 @@ var gStartPos;
 var gCenter;
 var gElMeme;
 var gLineCounter = 1;
+var gMemeImg;
 
 function init() {
     createMemes();
@@ -49,21 +50,37 @@ function memeEditor(elMeme) {
     gCtx = gElCanvas.getContext('2d');
     resizeCanvas();
     gCenter = { x: gElCanvas.width / 2, y: gElCanvas.height / 2 };
-    addListeners();
-
     drawImgFromSameDomain();
+    addListeners();
+}
+
+function renderCanvas() {
+    // gCtx.save();
+    drawImg();
+    renderText();
+    // gCtx.restore();
 }
 
 function drawImgFromSameDomain() {
-    // gElCanvas = document.querySelector('.canvas');
-    // gCtx = gElCanvas.getContext('2d');
+    gMemeImg = new Image();
+    gMemeImg.src = gElMeme.src;
 
-    var img = new Image();
-    img.src = gElMeme.src;
-
-    img.onload = () => {
-        gCtx.drawImage(img, 0, 0, gElCanvas.width, gElCanvas.height);
+    gMemeImg.onload = () => {
+        gCtx.drawImage(gMemeImg, 0, 0, gElCanvas.width, gElCanvas.height);
     };
+}
+
+function drawImg() {
+    if (gMemeImg)
+        gCtx.drawImage(gMemeImg, 0, 0, gElCanvas.width, gElCanvas.height);
+    else drawImgFromSameDomain();
+}
+
+function removeTextLine(ev) {
+    var lineNum = getLineNum(ev);
+    updatesLines(gCurrMemeId, lineNum);
+    // renderText();
+    renderCanvas();
 }
 
 function addTextLine() {
@@ -90,8 +107,8 @@ function addTextLine() {
                     </div>
 
                     <div class="editing-text">
-                        <button class="increase-line-${gLineCounter}" onclick="onChangeFont(event,1)">⏫</button>
-                        <button class="decrease-line-${gLineCounter}""onclick="onChangeFont(event,-1)">⏬</button>
+                        <button class="increase-line-${gLineCounter}" onclick="onChangeFont(event,1)">⇑</button>
+                        <button class="decrease-line-${gLineCounter}" onclick="onChangeFont(event,-1)">⇓</button>
                         <button class="left-line-${gLineCounter}">⬅</button>
                         <button class="center-line-${gLineCounter}">↔</button>
                         <button class="right-line-${gLineCounter}" >➡</button>
@@ -130,48 +147,44 @@ function addText(ev) {
     setCenter(gCurrMemeId, lineNum, gCenter.x);
     setHeight(gCurrMemeId, lineNum, gCenter.y, gElCanvas.height);
     updateMemeText(input.value, gCurrMemeId, lineNum);
-    renderText(lineNum);
+
+    renderCanvas();
     document.querySelector('.more-lines-controller').classList.remove('hidden');
 }
 
-//TODO - MOVING AND CHANGING ISSUE IS SOMEWHERE HERE
-//TODO - ALIGN NOT FUNCTIONING, IF DON'T GET TO IT BY 20:00 - REMOVE AND KEEP FOR SAT
 function renderText() {
-    // var text = getText(gCurrMemeId, lineNum);
-    // var pos = getPos(gCurrMemeId, lineNum);
-    // var fontSize = getSize(gCurrMemeId, lineNum);
-    // var fontFill = getFillColor(gCurrMemeId, lineNum);
-    // var fontColor = getLineColor(gCurrMemeId, lineNum);
-    // var fontAlign = getFontAlign(gCurrMemeId, lineNum);
-
     var memeLines = getAllLines(gCurrMemeId);
-    console.log(memeLines);
     for (var i = 0; i < memeLines.length; i++) {
         var text = getText(gCurrMemeId, i);
         var pos = getPos(gCurrMemeId, i);
         var fontSize = getSize(gCurrMemeId, i);
         var fontFill = getFillColor(gCurrMemeId, i);
         var fontColor = getLineColor(gCurrMemeId, i);
-        // var fontAlign = getFontAlign(gCurrMemeId, i);
-
-        gCtx.lineWidth = 2;
-        gCtx.strokeStyle = `${fontColor}`;
-        gCtx.fillStyle = `${fontFill}`;
-        fontSize += 'px';
-        gCtx.font = `${fontSize}  Impact`;
-        // gCtx.textAlign = `${fontAlign}`;
-        gCtx.strokeText(text, pos.x, pos.y);
-        gCtx.fillText(text, pos.x, pos.y);
+        drawText(text, pos.x, pos.y, fontSize, fontFill, fontColor, i);
     }
+}
 
-    // gCtx.lineWidth = 2;
-    // gCtx.strokeStyle = `${fontColor}`;
-    // gCtx.fillStyle = `${fontFill}`;
-    // fontSize += 'px';
-    // gCtx.font = `${fontSize}  Impact`;
-    // gCtx.textAlign = `${fontAlign}`;
-    // gCtx.fillText(text, pos.x, pos.y);
-    // gCtx.strokeText(text, pos.x, pos.y);
+function drawText(text, x, y, fontSize, fontFill, fontColor, idx) {
+    var recHeight = fontSize + 5;
+    recHeight = parseInt(recHeight);
+
+    gCtx.lineWidth = 1;
+    gCtx.strokeStyle = `${fontColor}`;
+    gCtx.fillStyle = `${fontFill}`;
+    fontSize += 'px';
+    gCtx.font = `${fontSize}  Impact`;
+    var recWidth = gCtx.measureText(text).width;
+    gCtx.textBaseline = 'top';
+    gCtx.strokeText(text, x, y);
+    gCtx.fillText(text, x, y);
+    drawTxtBorder(x, y, recWidth, recHeight, idx);
+}
+
+function drawTxtBorder(x, y, width, height, idx) {
+    gCtx.lineWidth = 0.5;
+    gCtx.strokeStyle = 'black';
+    gCtx.strokeRect(x, y, width, height);
+    saveTxtBorder(x, y, width, height, idx, gCurrMemeId);
 }
 
 function addListeners() {
@@ -179,7 +192,6 @@ function addListeners() {
     addTouchListeners();
     window.addEventListener('resize', () => {
         resizeCanvas();
-        drawImgFromSameDomain();
     });
 }
 
@@ -197,10 +209,10 @@ function addTouchListeners() {
 
 function onDown(ev) {
     const pos = getEvPos(ev);
+
     if (!isTextClicked(pos)) return;
     setTextDrag(true);
     gStartPos = pos;
-    console.log(gStartPos);
     document.body.style.cursor = 'grabbing';
 }
 
@@ -214,7 +226,7 @@ function onMove(ev) {
         const dy = pos.y - gStartPos.y;
         moveText(dx, dy);
         gStartPos = pos;
-        drawImgFromSameDomain();
+        renderCanvas();
     }
 }
 
@@ -243,6 +255,7 @@ function resizeCanvas() {
     var elContainer = document.querySelector('.canvas-container');
     gElCanvas.width = elContainer.offsetWidth;
     gElCanvas.height = elContainer.offsetHeight;
+    drawImg();
 }
 function downloadCanvas(elLink) {
     const data = gElCanvas.toDataURL();
@@ -250,25 +263,11 @@ function downloadCanvas(elLink) {
     elLink.download = 'my-img.jpg';
 }
 
-// function onIncreaseFontSize(ev) {
-//     var lineNum = getLineNum(ev);
-//     increaseFont(gCurrMemeId, lineNum);
-//     renderText(lineNum);
-// }
-
-// function onDecreaseFontSize(ev) {
-//     var lineNum = getLineNum(ev);
-//     decreaseFont(gCurrMemeId, lineNum);
-//     renderText(lineNum);
-// }
-
-function onChangeFont(ev,diff) {
+function onChangeFont(ev, diff) {
     var lineNum = getLineNum(ev);
-    updateSize(gCurrMemeId, lineNum,diff);
-    renderText(lineNum);
+    updateSize(gCurrMemeId, lineNum, diff);
+    renderCanvas();
 }
-
- 
 
 function onChangeLineColor(ev) {
     var lineNum = getLineNum(ev);
@@ -278,8 +277,7 @@ function onChangeLineColor(ev) {
     // lineColor.select();
     // console.log('line is', lineColor.value);
     changeLineCol(gCurrMemeId, lineNum, lineColor.value);
-    // renderText(lineNum);
-    renderText();
+    renderCanvas();
 }
 
 function onChangeFillColor(ev) {
@@ -290,25 +288,29 @@ function onChangeFillColor(ev) {
     // fillColor.select();
     console.log('fill is', fillColor.value);
     changeFillCol(gCurrMemeId, lineNum, fillColor.value);
-    // renderText(lineNum);
-    renderText();
+    renderCanvas();
 }
 
 function onRightAlign(ev) {
     var lineNum = getLineNum(ev);
     // changeAlign(gCurrMemeId, lineNum, 0);
     changeAlign(gCurrMemeId, lineNum, 'left');
-    renderText(lineNum);
+    renderCanvas();
 }
 function onCenterAlign(ev) {
     var lineNum = getLineNum(ev);
     // changeAlign(gCurrMemeId, lineNum, gElCanvas.width / 2);
     changeAlign(gCurrMemeId, lineNum, 'center');
-    renderText(lineNum);
+    renderCanvas();
 }
 function onLeftAlign(ev) {
     var lineNum = getLineNum(ev);
     // changeAlign(gCurrMemeId, lineNum, gElCanvas.width);
     changeAlign(gCurrMemeId, lineNum, 'right');
-    renderText(lineNum);
+    // renderText();
+    renderCanvas();
+}
+
+function getMeme() {
+    return gCurrMemeId;
 }

@@ -80,6 +80,13 @@ function saveMemesToStorage() {
     saveToStorage(KEY, gMemes);
 }
 
+function updatesLines(id, lineNum) {
+    var meme = findMemeId(id);
+    console.log(meme.lines);
+    meme.lines.splice(lineNum, 1);
+    console.log(meme.lines);
+}
+
 function displayMemes() {
     return gMemes;
 }
@@ -120,18 +127,6 @@ function updateSize(id, lineNum, diff) {
     console.log(meme.lines[lineNum].size);
 }
 
-// function increaseFont(id, lineNum) {
-//     var meme = findMemeId(id);
-//     meme.lines[lineNum].size++;
-//     console.log(meme.lines[lineNum].size);
-// }
-// function decreaseFont(id, lineNum) {
-//     var meme = findMemeId(id);
-//     if (meme.lines[lineNum].size <= 0) return;
-//     meme.lines[lineNum].size--;
-//     console.log(meme.lines[lineNum].size);
-// }
-
 function changeLineCol(id, lineNum, color) {
     var meme = findMemeId(id);
     meme.lines[lineNum].color = color;
@@ -145,7 +140,6 @@ function changeAlign(id, lineNum, updatedAlign) {
     var meme = findMemeId(id);
     // meme.lines[lineNum].pos.x = updatedAlign;
     meme.lines[lineNum].align = updatedAlign;
-    console.log(meme.lines[lineNum].align);
 }
 
 function getLineColor(memeId, lineNum) {
@@ -154,7 +148,6 @@ function getLineColor(memeId, lineNum) {
 }
 
 function getFillColor(memeId, lineNum) {
-    console.log('sanity');
     var meme = findMemeId(memeId);
     return meme.lines[lineNum].fillColor;
 }
@@ -166,7 +159,6 @@ function getText(memeId, lineNum) {
 
 function getAllLines(memeId) {
     var meme = findMemeId(memeId);
-    console.log(meme);
     return meme.lines;
 }
 
@@ -194,12 +186,18 @@ function getTextObject(id) {
 }
 
 function isTextClicked(clickedPos) {
-    const { pos } = gCurrMemeText;
-    console.log(clickedPos);
-    console.log([pos]);
-    const distance = (pos.x - clickedPos.x) * 2 + (pos.y - clickedPos.y) * 2;
-    console.log('distance', distance);
-    return distance <= gCurrMemeText.size;
+    // const { pos } = gCurrMemeText;
+    var id = getMeme();
+    var meme = findMemeId(id);
+    for (var i = 0; i < meme.lines.length; i++) {
+        var xStart = meme.lines[i].border.x;
+        var yStart = meme.lines[i].border.y;
+        var xEnd = xStart + meme.lines[i].border.width;
+        var yEnd = yStart + meme.lines[i].border.height;
+        if (clickedPos.x < xStart || clickedPos.x > xEnd) return;
+        if (clickedPos.y < yStart || clickedPos.y > yEnd) return;
+        return true;
+    }
 }
 
 function setTextDrag(isDrag) {
@@ -209,4 +207,9 @@ function setTextDrag(isDrag) {
 function moveText(dx, dy) {
     gCurrMemeText.pos.x += dx;
     gCurrMemeText.pos.y += dy;
+}
+
+function saveTxtBorder(x, y, width, height, lineNum, id) {
+    var meme = findMemeId(id);
+    meme.lines[lineNum].border = { x: x, y: y, width: width, height: height };
 }

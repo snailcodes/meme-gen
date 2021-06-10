@@ -57,8 +57,9 @@ header {
 }
 
 .more-lines-controller {
-    justify-content: space-evenly;
+    justify-content: center;
     padding-top: 2px;
+    gap: px;
 }
 
 .additions {
@@ -103,7 +104,7 @@ button {
 }
 
 .editor-control button {
-    height: 30px;
+    height: 40px;
 }
 
 .editing-text {
