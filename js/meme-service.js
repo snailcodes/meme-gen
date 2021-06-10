@@ -31,8 +31,7 @@ function updateNewLine(id, centerPos) {
     meme.lines.push(newline);
 }
 
-function createMeme(imgNum, centerPos) {
-    console.log(centerPos);
+function createMeme(imgNum) {
     return {
         imgID: imgNum,
         selectedLineIdx: 0,
@@ -46,7 +45,7 @@ function createMeme(imgNum, centerPos) {
                 color: '#000000',
                 fillColor: '#FFFFFF',
                 pos: {
-                    x: centerPos.x,
+                    x: 130,
                     y: 40,
                 },
             },
@@ -75,6 +74,31 @@ function saveMemesToStorage() {
 
 function displayMemes() {
     return gMemes;
+}
+
+function setCenter(id, lineNum, centerX) {
+    var meme = findMemeId(id);
+    meme.lines[lineNum].pos.x = centerX;
+}
+
+function setHeight(id, lineNum, centerY, maxY) {
+    var meme = findMemeId(id);
+
+    switch (lineNum) {
+        case '0':
+            var newYPos = 0 + meme.lines[lineNum].size;
+            meme.lines[lineNum].pos.y = newYPos;
+            break;
+        case '1':
+            meme.lines[lineNum].pos.y = maxY - meme.lines[lineNum].size;
+            break;
+        default:
+            console.log('sanity');
+            meme.lines[lineNum].pos.y =
+                centerY + meme.lines[lineNum].size * lineNum;
+            break;
+    }
+    console.log(meme.lines[lineNum].pos);
 }
 
 function updateMemeText(input, id, lineNum) {

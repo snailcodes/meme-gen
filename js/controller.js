@@ -7,14 +7,10 @@ const gTouchEvs = ['touchstart', 'touchmove', 'touchend'];
 var gStartPos;
 var gCenter;
 var gElMeme;
+var gLineCounter = 1;
 
 function init() {
-    gElCanvas = document.querySelector('.canvas');
-    gCtx = gElCanvas.getContext('2d');
-    resizeCanvas();
-    addListeners();
-    gCenter = { x: gElCanvas.width / 2, y: gElCanvas.height / 2 };
-    createMemes(gCenter);
+    createMemes();
     renderMemes();
 }
 
@@ -48,6 +44,12 @@ function memeEditor(elMeme) {
 
     gElMeme = elMeme;
     gCurrMemeId = gElMeme.classList[1];
+
+    gElCanvas = document.querySelector('.canvas');
+    gCtx = gElCanvas.getContext('2d');
+    resizeCanvas();
+    addListeners();
+
     drawImgFromSameDomain();
 }
 
@@ -65,20 +67,20 @@ function drawImgFromSameDomain() {
 
 function addTextLine() {
     var elTextSection = document.querySelector('.additional-lines');
-    var lineCounter = 1;
+
     var strHTML = `<div class="text-line">
                         <form>
                             <input
                                 placeholder="Enter Text"
                                 type="text"
-                                class="input-line-${lineCounter}"
+                                class="input-line-${gLineCounter}"
                                 value=""
                             />
                             <input
-                                onclick="addText(event,${lineCounter})"
+                                onclick="addText(event,${gLineCounter})"
                                 type="button"
                                 value="Add Text"
-                                class="input-btn-line-${lineCounter}"
+                                class="input-btn-line-${gLineCounter}"
                             />
                         </form>
                         <button>↕</button>
@@ -87,27 +89,27 @@ function addTextLine() {
                     </div>
 
                     <div class="editing-text">
-                        <button class="line-${lineCounter}" onclick="onIncreaseFontSize(event)">⏫</button>
-                        <button class="line-${lineCounter}""onclick="onDecreaseFontSize(event)">⏬</button>
-                        <button class="line-${lineCounter}">⬅</button>
-                        <button class="line-${lineCounter}">↔</button>
-                        <button class="line-${lineCounter}" >➡</button>
+                        <button class="increase-line-${gLineCounter}" onclick="onIncreaseFontSize(event)">⏫</button>
+                        <button class="decrease-line-${gLineCounter}""onclick="onDecreaseFontSize(event)">⏬</button>
+                        <button class="left-line-${gLineCounter}">⬅</button>
+                        <button class="center-line-${gLineCounter}">↔</button>
+                        <button class="right-line-${gLineCounter}" >➡</button>
                         <input type="color"
                                 onchange="onChangeLineColor(event)"
-                                class="color-line-${lineCounter}"
+                                class="color-line-${gLineCounter}"
                                 value="#000000">
                                 🖌
                              </input>
                             <input type="color"
                                 onchange="onChangeFillColor(event)"
-                                class="bcgColor-line-${lineCounter}"
+                                class="bcgColor-line-${gLineCounter}"
                                 value="#FFFFFF"
                             >
                                 🎨
                         </input>
                     </div>`;
 
-    lineCounter++;
+    gLineCounter++;
     updateNewLine(gCurrMemeId, gCenter);
     elTextSection.innerHTML += strHTML;
 }
@@ -123,8 +125,13 @@ function addText(ev) {
     var lineNum = getLineNum(ev);
     var str = '.input-line-' + lineNum;
     var input = document.querySelector(str);
+    gCenter = { x: gElCanvas.width / 2, y: gElCanvas.height / 2 };
+
+    setCenter(gCurrMemeId, lineNum, gCenter.x);
+    setHeight(gCurrMemeId, lineNum, gCenter.y, gElCanvas.height);
     updateMemeText(input.value, gCurrMemeId, lineNum);
     renderText(lineNum);
+    document.querySelector('.more-lines-controller').classList.remove('hidden');
 }
 
 //TODO - MOVING AND CHANGING ISSUE IS SOMEWHERE HERE
@@ -138,7 +145,6 @@ function renderText(lineNum) {
     var fontColor = getLineColor(gCurrMemeId, lineNum);
 
     var fontAlign = getFontAlign(gCurrMemeId, lineNum);
-    console.log(pos);
 
     gCtx.lineWidth = 2;
     gCtx.strokeStyle = `${fontColor}`;
