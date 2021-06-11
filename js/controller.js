@@ -9,6 +9,7 @@ var gCenter;
 var gElMeme;
 var gLineCounter = 1;
 var gMemeImg;
+var gTextOb;
 
 function init() {
     createMemes();
@@ -147,7 +148,10 @@ function getLineNum(ev) {
 }
 
 function preventE(ev) {
-    if (ev.keyCode === 13) ev.preventDefault();
+    if (ev.keyCode === 13) {
+        ev.preventDefault();
+        addText(ev);
+    }
 }
 
 function addText(ev) {
@@ -247,19 +251,25 @@ function addTouchListeners() {
 
 function onDown(ev) {
     const pos = getEvPos(ev);
-    if (!isTextClicked(pos)) return;
 
-    // setTextDrag(true);
+    // if (!isTextClicked(pos)) return;
+
+    //don't forget to change name
+    gTextOb = isTextClicked(pos);
+    // console.log(gTextOb);
+    if (!gTextOb) return;
+
     gStartPos = pos;
     document.body.style.cursor = 'grabbing';
 }
 
 function onMove(ev) {
-    var lineNum = getLineNum(ev);
-    // console.log(lineNum);
+    // var lineNum = getLineNum(ev);
 
-    const text = getTextObject(gCurrMemeId, lineNum);
-    if (text.isDrag) {
+    // const text = getTextObject(gCurrMemeId);
+    // console.log(text);
+    if (!gTextOb) return;
+    if (gTextOb.isDrag) {
         const pos = getEvPos(ev);
         const dx = pos.x - gStartPos.x;
         const dy = pos.y - gStartPos.y;

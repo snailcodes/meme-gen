@@ -84,11 +84,10 @@ function saveMemesToStorage() {
 
 function updatesLines(id, lineNum) {
     var meme = findMemeId(id);
-    console.log(meme.lines);
     meme.lines.splice(lineNum, 1);
-    console.log(meme.lines);
 }
 
+//NOT CURR IN USE - IF WILL INCLUDE SEARCH
 function displayMemes() {
     return gMemes;
 }
@@ -198,12 +197,12 @@ function getPos(memeId, lineNum) {
     return meme.lines[lineNum].pos;
 }
 
-function getTextObject(id) {
-    var meme = findMemeId(id);
-    gCurrMemeText = meme.lines[0];
-    // console.log(gCurrMemeText);
-    return meme.lines[0];
-}
+// function getTextObject(id) {
+//     var meme = findMemeId(id);
+//     gCurrMemeText = meme.lines[0];
+//     // console.log(gCurrMemeText);
+//     return meme.lines[0];
+// }
 
 function isTextClicked(clickedPos) {
     var id = getMeme();
@@ -213,6 +212,19 @@ function isTextClicked(clickedPos) {
         var yStart = meme.lines[i].border.y;
         var xEnd = xStart + meme.lines[i].border.width;
         var yEnd = yStart + meme.lines[i].border.height;
+        console.log(
+            'curr pos is:',
+            clickedPos.x,
+            clickedPos.y,
+            'line',
+            i,
+            'x start and end:',
+            xStart,
+            xEnd,
+            'y start and end:',
+            yStart,
+            yEnd
+        );
         // if (clickedPos.x < xStart || clickedPos.x > xEnd) break;
         // if (clickedPos.y < yStart || clickedPos.y > yEnd) break;
 
@@ -223,8 +235,11 @@ function isTextClicked(clickedPos) {
             clickedPos.y < yEnd
         ) {
             meme.lines[i].isDrag = true;
-            return true;
-        }
+            gCurrMemeText = meme.lines[i];
+            // console.log(meme.lines[i]);
+
+            return meme.lines[i];
+        } else console.log('caugt nobody');
     }
 }
 
