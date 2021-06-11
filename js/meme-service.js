@@ -23,6 +23,7 @@ function updateNewLine(id, centerPos) {
         align: 'center',
         color: '#000000',
         fillColor: '#FFFFFF',
+        fontFam: 'Impact',
         pos: {
             x: centerPos.x,
             y: 250,
@@ -48,6 +49,7 @@ function createMeme(imgNum) {
                 align: 'center',
                 color: '#000000',
                 fillColor: '#FFFFFF',
+                fontFam: 'Impact',
                 pos: {
                     x: 130,
                     y: 40,
@@ -124,7 +126,13 @@ function updateSize(id, lineNum, diff) {
     var meme = findMemeId(id);
     if (meme.lines[lineNum].size <= 0) return;
     meme.lines[lineNum].size += diff;
-    console.log(meme.lines[lineNum].size);
+}
+
+function updateFont(id, lineNum, value) {
+    var meme = findMemeId(id);
+    console.log(meme.lines);
+    meme.lines[lineNum].fontFam = value;
+    console.log(meme.lines[lineNum].fontFam);
 }
 
 function changeLineCol(id, lineNum, color) {
@@ -157,6 +165,16 @@ function getFillColor(memeId, lineNum) {
 function getText(memeId, lineNum) {
     var meme = findMemeId(memeId);
     return meme.lines[lineNum].txt;
+}
+
+function getFont(memeId, lineNum) {
+    var meme = findMemeId(memeId);
+    return meme.lines[lineNum].fontFam;
+}
+
+function getAlign(memeId, lineNum) {
+    var meme = findMemeId(memeId);
+    return meme.lines[lineNum].align;
 }
 
 function getAllLines(memeId) {

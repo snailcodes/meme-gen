@@ -101,14 +101,23 @@ function addTextLine() {
                                 class="input-btn-line-${gLineCounter}"
                             />
                         </form>
-                        <button>↕</button>
                         <button onclick="addTextLine()">➕</button>
                         <button>❌</button>
-                    </div>
+                  
 
                     <div class="editing-text">
-                        <button class="increase-line-${gLineCounter}" onclick="onChangeFont(event,1)">⇑</button>
-                        <button class="decrease-line-${gLineCounter}" onclick="onChangeFont(event,-1)">⇓</button>
+                    <select name="fonts-select" class="input-line-${gLineCounter}" onchange="onChangeFont(event,value)">
+                        <option value="Impact" selected="selected">Impact</option>
+                        <option value="Arial">Ariel</option>
+                        <option value="Montserrat">Montserrat</option>
+                        <option value="Comic Sans MS">Comic Sans MS</option>
+                        <option value="Segoe Script ">Segoe Script </option>
+                    </select> 
+                        <button class="increase-line-${gLineCounter}" onclick="onChangeSize(event,1)">⇑</button>
+                        <button class="decrease-line-${gLineCounter}" onclick="onChangeSize(event,-1)">⇓</button>
+                        <button class="left-line-${gLineCounter}" onclick="onLeftAlign(event)">⬅</button>
+                        <button class="center-line-${gLineCounter}" onclick="onCenterAlign(event)">↔</button> 
+                        <button class="right-line-${gLineCounter}" onclick="onRightAlign(event)">➡</button>
                      
                         <input type="color"
                                 onchange="onChangeLineColor(event)"
@@ -123,6 +132,7 @@ function addTextLine() {
                             >
                                 🎨
                         </input>
+                        </div>
                     </div>`;
 
     gLineCounter++;
@@ -130,22 +140,22 @@ function addTextLine() {
     elTextSection.innerHTML += strHTML;
 }
 
-//   <button class="left-line-${gLineCounter}">⬅</button>
-// {/* <button class="center-line-${gLineCounter}">↔</button> */}
-
-/* <button class="right-line-${gLineCounter}" >➡</button> */
-
 function getLineNum(ev) {
     var str = ev.target.classList;
     var str = str.toString();
     return str.split('-').pop();
 }
 
+function preventE(ev) {
+    if (ev.keyCode === 13) ev.preventDefault();
+}
+
 function addText(ev) {
-    ev.preventDefault();
     var lineNum = getLineNum(ev);
     var str = '.input-line-' + lineNum;
+    var btnStr = '.input-btn-line-' + lineNum;
     var input = document.querySelector(str);
+    var btn = document.querySelector(btnStr);
 
     setCenter(gCurrMemeId, lineNum, gCenter.x);
     setHeight(gCurrMemeId, lineNum, gCenter.y, gElCanvas.height);
@@ -153,6 +163,7 @@ function addText(ev) {
 
     renderCanvas();
     document.querySelector('.more-lines-controller').classList.remove('hidden');
+    btn.value = 'Update Text';
 }
 
 function renderText() {
@@ -163,20 +174,42 @@ function renderText() {
         var fontSize = getSize(gCurrMemeId, i);
         var fontFill = getFillColor(gCurrMemeId, i);
         var fontColor = getLineColor(gCurrMemeId, i);
-        drawText(text, pos.x, pos.y, fontSize, fontFill, fontColor, i);
+        var fontFam = getFont(gCurrMemeId, i);
+        var align = getAlign(gCurrMemeId, i);
+        drawText(
+            text,
+            pos.x,
+            pos.y,
+            fontSize,
+            fontFill,
+            fontColor,
+            fontFam,
+            align,
+            i
+        );
     }
 }
 
-function drawText(text, x, y, fontSize, fontFill, fontColor, idx) {
+function drawText(
+    text,
+    x,
+    y,
+    fontSize,
+    fontFill,
+    fontColor,
+    fontFam,
+    align,
+    idx
+) {
     var recHeight = fontSize + 5;
     recHeight = parseInt(recHeight);
-
     gCtx.lineWidth = 1;
     gCtx.strokeStyle = `${fontColor}`;
     gCtx.fillStyle = `${fontFill}`;
+    gCtx.textAlign = `${align}`;
 
     fontSize += 'px';
-    gCtx.font = `${fontSize}  Impact`;
+    gCtx.font = `${fontSize}  ${fontFam}`;
     var recWidth = gCtx.measureText(text).width;
     gCtx.textBaseline = 'top';
     gCtx.strokeText(text, x, y);
@@ -214,7 +247,6 @@ function addTouchListeners() {
 
 function onDown(ev) {
     const pos = getEvPos(ev);
-
     if (!isTextClicked(pos)) return;
 
     // setTextDrag(true);
@@ -265,9 +297,17 @@ function resizeCanvas() {
     drawImg();
 }
 
-function onChangeFont(ev, diff) {
+function onChangeSize(ev, diff) {
+    console.log(ev);
     var lineNum = getLineNum(ev);
+
     updateSize(gCurrMemeId, lineNum, diff);
+    renderCanvas();
+}
+
+function onChangeFont(ev, value) {
+    var lineNum = getLineNum(ev);
+    updateFont(gCurrMemeId, lineNum, value);
     renderCanvas();
 }
 
@@ -286,30 +326,24 @@ function onChangeFillColor(ev) {
     var lineNum = getLineNum(ev);
     var className = '.bcgColor-line-' + lineNum;
     var fillColor = document.querySelector(className);
-    // fillColor.addEventListener('input', updateValue);
-    // fillColor.select();
-    console.log('fill is', fillColor.value);
     changeFillCol(gCurrMemeId, lineNum, fillColor.value);
     renderCanvas();
 }
 
+//weird alignment bug???
 function onRightAlign(ev) {
     var lineNum = getLineNum(ev);
-    // changeAlign(gCurrMemeId, lineNum, 0);
     changeAlign(gCurrMemeId, lineNum, 'left');
     renderCanvas();
 }
 function onCenterAlign(ev) {
     var lineNum = getLineNum(ev);
-    // changeAlign(gCurrMemeId, lineNum, gElCanvas.width / 2);
     changeAlign(gCurrMemeId, lineNum, 'center');
     renderCanvas();
 }
 function onLeftAlign(ev) {
     var lineNum = getLineNum(ev);
-    // changeAlign(gCurrMemeId, lineNum, gElCanvas.width);
     changeAlign(gCurrMemeId, lineNum, 'right');
-    // renderText();
     renderCanvas();
 }
 

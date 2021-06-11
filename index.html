@@ -27,6 +27,7 @@
                                 type="text"
                                 value=""
                                 class="input-line-0"
+                                onkeydown="preventE(event)"
                             />
                             <input
                                 onclick="addText(event)"
@@ -41,21 +42,30 @@
                         <button onclick="removeTextLine(event)">❌</button>
                          </div>
                         <div class="editing-text">
+                            <select name="fonts-select" class="input-line-0" onchange="onChangeFont(event,value)">
+                                <option value="Impact" selected="selected">Impact</option>
+                                <option value="Arial">Ariel</option>
+                                <option value="Montserrat">Montserrat</option>
+                                <option value="Comic Sans MS">Comic Sans MS</option>
+                                <option value="Segoe Script ">Segoe Script </option>
+                            </select> 
+
+
                             <button
                                 class="increase-line-0"
-                                onclick="onChangeFont(event,1)"
+                                onclick="onChangeSize(event,1)"
                             >
                             ⇑
                             </button>
                             <button
                                 class="decrease-line-0"
-                                onclick="onChangeFont(event,-1)"
+                                onclick="onChangeSize(event,-1)"
                             >
                                 ⇓
                             </button>
-                            <!-- <button onclick="onRightAlign(event)" class="left-line-0">⬅</button>
+                            <button onclick="onLeftAlign(event)" class="left-line-0">⬅</button>
                             <button onclick="onCenterAlign(event)" class="center-line-0">↔</button>
-                            <button onclick="onLeftAlign(event)" class="right-line-0">➡</button> -->
+                            <button onclick="onRightAlign(event)" class="right-line-0">➡</button>
                             <input type="color"
                                 onchange="onChangeLineColor(event)"
                                 class="color-line-0"
