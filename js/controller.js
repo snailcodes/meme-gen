@@ -10,6 +10,7 @@ var gElMeme;
 var gLineCounter = 1;
 var gMemeImg;
 var gTextOb;
+var gCurrLine;
 
 function init() {
 	createMemes();
@@ -26,7 +27,7 @@ function renderMemes() {
     />`
 	);
 
-	document.querySelector('.gallery-grid').innerHTML = strHTMLs.join('');
+	document.querySelector('.memes').innerHTML = strHTMLs.join('');
 }
 
 //todo - consider renderCanvas???
@@ -274,13 +275,11 @@ function addTouchListeners() {
 function onDown(ev) {
 	const pos = getEvPos(ev);
 
-	// if (!isTextClicked(pos)) return;
-
 	//don't forget to change name
-	gTextOb = isTextClicked(pos);
+	gTextOb = textClicked(pos);
 	// console.log(gTextOb);
 	if (!gTextOb) return;
-
+	console.log(gTextOb);
 	gStartPos = pos;
 	document.body.style.cursor = 'grabbing';
 }

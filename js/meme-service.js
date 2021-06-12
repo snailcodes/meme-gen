@@ -3,6 +3,7 @@
 var KEY = 'memes';
 var gMemes;
 var gCurrMemeText;
+var gCurrMemeLineNum;
 
 function getMemes() {
 	return gMemes;
@@ -204,7 +205,7 @@ function getPos(memeId, lineNum) {
 //     return meme.lines[0];
 // }
 
-function isTextClicked(clickedPos) {
+function textClicked(clickedPos) {
 	var id = getMeme();
 	var meme = findMemeId(id);
 	for (var i = 0; i < meme.lines.length; i++) {
@@ -225,8 +226,6 @@ function isTextClicked(clickedPos) {
 			yStart,
 			yEnd
 		);
-		// if (clickedPos.x < xStart || clickedPos.x > xEnd) break;
-		// if (clickedPos.y < yStart || clickedPos.y > yEnd) break;
 
 		if (
 			clickedPos.x > xStart &&
@@ -236,7 +235,7 @@ function isTextClicked(clickedPos) {
 		) {
 			meme.lines[i].isDrag = true;
 			gCurrMemeText = meme.lines[i];
-			// console.log(meme.lines[i]);
+			gCurrMemeLineNum = i;
 
 			return meme.lines[i];
 		} else console.log('caugt nobody');
