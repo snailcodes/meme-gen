@@ -1,114 +1,207 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8" />
-        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Meme Gen</title>
-        <link rel="stylesheet" href="css/style.css" />
-    </head>
-    <body class="main-layout" onload="init()">
-        <header class=" main-layout">
-            <div class="header-contents flex">
-            <div class="logo">מיעמעס גענעראַטאָר</div>
-            <div onclick="displayMenu()" class="menu">☰</div>
-        </div>
-        </header>
-        <main class="main-container main-layout flex">
-            <div class="editor hidden flex">
-                <div class="canvas-container hidden main-layout ">
-                    <canvas class="canvas" width="300" height="300"></canvas>
-                </div>
-                <section class="editor-control flex">
-                    <div class="text-line">
-                        <form>
-                            <input
-                                placeholder="Enter Text"
-                                type="text"
-                                value=""
-                                class="input-line-0"
-                                onkeydown="preventE(event)"
-                            />
-                            <input
-                                onclick="addText(event)"
-                                type="button"
-                                value="Add Text"
-                                class="input-btn-line-0"
-                            />
-                        </form>
-                        
-                        <div class="more-lines-controller flex hidden">
-                        <button onclick="addTextLine()">➕</button>
-                        <button onclick="removeTextLine(event)">❌</button>
-                         </div>
-                        <div class="editing-text">
-                            <select name="fonts-select" class="input-line-0" onchange="onChangeFont(event,value)">
-                                <option value="Impact" selected="selected">Impact</option>
-                                <option value="Arial">Ariel</option>
-                                <option value="Montserrat">Montserrat</option>
-                                <option value="Comic Sans MS">Comic Sans MS</option>
-                                <option value="Segoe Script ">Segoe Script </option>
-                            </select> 
+	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Meme Gen</title>
+		<link
+			href="https://fonts.googleapis.com/icon?family=Material+Icons"
+			rel="stylesheet"
+		/>
+		<link rel="stylesheet" href="css/style.css" />
+	</head>
+	<body class="main-layout" onload="init()">
+		<header class="main-layout">
+			<div class="header-contents flex">
+				<div class="logo">מיעמעס גענעראַטאָר</div>
+				<a href="#" class="home-link hidden" onclick="toGallery()">
+					<span class="material-icons">home</span>
+				</a>
+			</div>
+		</header>
+		<main class="main-container main-layout flex">
+			<div class="editor hidden flex">
+				<div class="canvas-container hidden main-layout">
+					<canvas class="canvas" width="300" height="300"></canvas>
+				</div>
+				<section class="editor-control flex">
+					<div class="text-lines">
+						<div class="text-line text-line-input-0">
+							<form>
+								<input
+									placeholder="Enter Text"
+									type="text"
+									value=""
+									class="input-line-0"
+									onkeydown="preventE(event)"
+								/>
+								<input
+									onclick="addText(event)"
+									type="button"
+									value="Add Text"
+									class="input-btn-line-0"
+								/>
+							</form>
 
+							<div class="more-lines-controller flex hidden">
+								<button onclick="addTextLine()">
+									<span class="material-icons">add</span>
+								</button>
+								<button onclick="onRemoveTextLine(event)">
+									<span class="material-icons delete-input-0">
+										delete
+									</span>
+								</button>
+							</div>
+							<div class="editing-text">
+								<div class="main-editing-tools">
+									<select
+										name="fonts-select"
+										class="input-line-0"
+										onchange="onChangeFont(event,value)"
+									>
+										<option
+											value="Impact"
+											selected="selected"
+										>
+											Impact
+										</option>
+										<option value="Arial">Ariel</option>
+										<option value="Montserrat">
+											Montserrat
+										</option>
+										<option value="Comic Sans MS">
+											Comic Sans MS
+										</option>
+										<option value="Segoe Script ">
+											Segoe Script
+										</option>
+									</select>
 
-                            <button
-                                class="increase-line-0"
-                                onclick="onChangeSize(event,1)"
-                            >
-                            ⇑
-                            </button>
-                            <button
-                                class="decrease-line-0"
-                                onclick="onChangeSize(event,-1)"
-                            >
-                                ⇓
-                            </button>
-                            <button onclick="onLeftAlign(event)" class="left-line-0">⬅</button>
-                            <button onclick="onCenterAlign(event)" class="center-line-0">↔</button>
-                            <button onclick="onRightAlign(event)" class="right-line-0">➡</button>
-                            <input type="color"
-                                onchange="onChangeLineColor(event)"
-                                class="color-line-0"
-                                value="#000000">
-                                🖌
-                             </input>
-                            <input type="color"
-                                onchange="onChangeFillColor(event)"
-                                class="bcgColor-line-0"
-                                value="#FFFFFF"
-                            >
-                                🎨
-                        </input>
-                        </div>
-                    </div>
+									<button
+										class="increase-line-0"
+										onclick="onChangeSize(event,1)"
+									>
+										⇑
+									</button>
+									<button
+										class="decrease-line-0"
+										onclick="onChangeSize(event,-1)"
+									>
+										⇓
+									</button>
 
-                    <div class="additional-lines"></div>
+									<input
+										type="color"
+										onchange="onChangeLineColor(event)"
+										class="color-line-0"
+										value="#000000"
+									/>
 
+									<span class="material-icons">
+										border_color
+									</span>
+									<input
+										type="color"
+										onchange="onChangeFillColor(event)"
+										class="bcgColor-line-0"
+										value="#FFFFFF"
+									/>
 
-                    <a
-                        href="#" class="download-link"
-                        onclick="downloadCanvas(this)"
-                        download="file-name"
-                        >Download</a
-                    >
-                </section>
-            </div>
-            <div class="additions">
-                <!-- <div class="search-bar">search bar placeholder</div>
+									<span class="material-icons">
+										format_color_fill
+									</span>
+
+									<div class="align-text">
+										<button
+											onclick="onLeftAlign(event)"
+											class="left-line-0"
+										>
+											<span class="material-icons">
+												format_align_left
+											</span>
+										</button>
+										<button
+											onclick="onCenterAlign(event)"
+											class="center-line-0"
+										>
+											<span class="material-icons">
+												format_align_center
+											</span>
+										</button>
+										<button
+											onclick="onRightAlign(event)"
+											class="right-line-0"
+										>
+											<span class="material-icons">
+												format_align_right
+											</span>
+										</button>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="additional-lines"></div>
+
+					<div class="inputs flex">
+						<div>
+						<form
+							action=""
+							method="POST"
+							enctype="multipart/form-data"
+							onsubmit="uploadImg(this, event)"
+						>
+							<input name="img" id="imgData" type="hidden" />
+							<button class="btn" type="submit">Publish</button>
+							<!-- <a href="#" class="btn" onclick="downloadImg(this)" download="my-img.jpg">Download as jpeg</a> -->
+							<div class="share-container"></div>
+						</div>
+						<div>
+							<a
+								href="#"
+								class="download-link"
+								onclick="downloadCanvas(this)"
+								download="file-name"
+							>
+								Download
+								<span class="material-icons">
+									file_download
+								</span>
+							</a>
+							</div>
+						</form>
+					</div>
+
+					<!-- <a
+						href="#"
+						class="download-link"
+						onclick="downloadCanvas(this)"
+						download="file-name"
+					>
+						Download
+						<span class="material-icons">file_download</span>
+					</a> -->
+				</section>
+			</div>
+			<div class="additions">
+				<!-- <div class="search-bar">search bar placeholder</div>
                 <div class="tag-words">tag words placeholder</div> -->
-            </div>
-            <div class="gallery-grid"></div>
-        </main>
+			</div>
+			<div class="gallery-grid"></div>
+		</main>
 
-        <footer class="main-layout">
-            <div class="footer-contents">
-            <div class="logo">מיעמעס גענעראַטאָר</div>
-            <div class="terms">little tiny term line</div>
-        </div>
-        </footer>
-    </body>
+		<footer class="main-layout">
+			<div class="footer-contents">
+				<div class="logo">מיעמעס גענעראַטאָר</div>
+				<div class="terms">little tiny term line</div>
+			</div>
+		</footer>
+	</body>
 
-    <script src="./js/UTIL.js"></script>
-    <script src="./js/meme-service.js"></script>
-    <script src="./js/controller.js"></script>
+	<script src="./js/UTIL.js"></script>
+	<script src="./js/download-upload-service.js"></script>
+	<script src="./js/meme-service.js"></script>
+	<script src="./js/controller.js"></script>
 </html>
