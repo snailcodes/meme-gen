@@ -30,18 +30,14 @@ function renderMemes() {
 	document.querySelector('.memes').innerHTML = strHTMLs.join('');
 }
 
-//todo - consider renderCanvas???
 function memeEditor(elMeme) {
 	//Hiding gallery, showing editor
-	var elSearch = document.querySelector('.search-bar');
-	var elTagWords = document.querySelector('.tag-words');
+
 	var elGallery = document.querySelector('.gallery-grid ');
 	var elEditor = document.querySelector('.editor');
 	var elContainer = document.querySelector('.canvas-container');
 	var elHome = document.querySelector('.home-link');
 
-	// elSearch.classList.add('hidden');
-	// elTagWords.classList.add('hidden');
 	elGallery.classList.add('hidden');
 	elEditor.classList.remove('hidden');
 	elContainer.classList.remove('hidden');
@@ -144,13 +140,13 @@ function addTextLine() {
                         </input>
 
                         <div class="align-text">
-                        <button class="left-line-${gLineCounter}" onclick="onLeftAlign(event)"><span class="material-icons">
+                        <button class="left-line-${gLineCounter}" onclick="onLeftAlign(event)"><span class="material-icons left-line-${gLineCounter}">
                         format_align_left
                     </span></button>
-                        <button class="center-line-${gLineCounter}" onclick="onCenterAlign(event)"><span class="material-icons">
+                        <button class="center-line-${gLineCounter}" onclick="onCenterAlign(event)"><span class="material-icons center-line-${gLineCounter}">
                         format_align_center
                     </span></button> 
-                        <button class="right-line-${gLineCounter}" onclick="onRightAlign(event)"><span class="material-icons">
+                        <button class="right-line-${gLineCounter}" onclick="onRightAlign(event)"><span class="material-icons right-line-${gLineCounter}">
                         format_align_right
                     </span></button>
                         </div>
@@ -162,6 +158,10 @@ function addTextLine() {
 	gLineCounter++;
 	updateNewLine(gCurrMemeId, gCenter);
 	elTextSection.innerHTML += strHTML;
+}
+
+function getMeme() {
+	return gCurrMemeId;
 }
 
 function getLineNum(ev) {
@@ -242,15 +242,7 @@ function drawText(
 	gCtx.strokeText(text, x, y);
 	gCtx.fillText(text, x, y);
 	saveTxtBorder(x, y, recWidth, recHeight, idx, gCurrMemeId);
-	// drawTxtBorder(x, y, recWidth, recHeight, idx);
 }
-
-// function drawTxtBorder(x, y, width, height, idx) {
-//     // gCtx.lineWidth = 0.5;
-//     // gCtx.strokeStyle = 'black';
-//     gCtx.strokeRect(x, y, width, height);
-//     saveTxtBorder(x, y, width, height, idx, gCurrMemeId);
-// }
 
 function addListeners() {
 	addMouseListeners();
@@ -275,9 +267,7 @@ function addTouchListeners() {
 function onDown(ev) {
 	const pos = getEvPos(ev);
 
-	//don't forget to change name
 	gTextOb = textClicked(pos);
-	// console.log(gTextOb);
 	if (!gTextOb) return;
 	console.log(gTextOb);
 	gStartPos = pos;
@@ -285,10 +275,6 @@ function onDown(ev) {
 }
 
 function onMove(ev) {
-	// var lineNum = getLineNum(ev);
-
-	// const text = getTextObject(gCurrMemeId);
-	// console.log(text);
 	if (!gTextOb) return;
 	if (gTextOb.isDrag) {
 		const pos = getEvPos(ev);
@@ -346,9 +332,6 @@ function onChangeLineColor(ev) {
 	var lineNum = getLineNum(ev);
 	var className = '.color-line-' + lineNum;
 	var lineColor = document.querySelector(className);
-	// lineColor.addEventListener('input', updateValue);
-	// lineColor.select();
-	// console.log('line is', lineColor.value);
 	changeLineCol(gCurrMemeId, lineNum, lineColor.value);
 	renderCanvas();
 }
@@ -361,7 +344,6 @@ function onChangeFillColor(ev) {
 	renderCanvas();
 }
 
-//weird alignment bug???
 function onRightAlign(ev) {
 	var lineNum = getLineNum(ev);
 	changeAlign(gCurrMemeId, lineNum, 'left');
@@ -378,10 +360,6 @@ function onLeftAlign(ev) {
 	renderCanvas();
 }
 
-function getMeme() {
-	return gCurrMemeId;
-}
-
 function downloadCanvas(elLink) {
 	// ev.preventDefault();
 	const data = gElCanvas.toDataURL();
@@ -389,8 +367,8 @@ function downloadCanvas(elLink) {
 	elLink.download = 'my-meme.jpg';
 }
 
+//MOVES BACK TO GALLERY
 function toGallery() {
-	console.log('sanity');
 	var elGallery = document.querySelector('.gallery-grid ');
 	var elEditor = document.querySelector('.editor');
 	var elContainer = document.querySelector('.canvas-container');
@@ -406,6 +384,10 @@ function onImgInput(ev) {
 	loadImageFromInput(ev, renderImg);
 }
 
+function renderImg(img) {
+	gCtx.drawImage(img, 0, 0, gElCanvas.width, gElCanvas.height);
+}
+
 function loadImageFromInput(ev, onImageReady) {
 	document.querySelector('.share-container').innerHTML = '';
 	var reader = new FileReader();
@@ -414,7 +396,6 @@ function loadImageFromInput(ev, onImageReady) {
 		var img = new Image();
 		img.onload = onImageReady.bind(null, img);
 		img.src = event.target.result;
-		gImg = img;
 	};
 	reader.readAsDataURL(ev.target.files[0]);
 }

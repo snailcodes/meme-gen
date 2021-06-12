@@ -16,7 +16,7 @@
 			<div class="header-contents flex">
 				<div class="logo">מיעמעס גענעראַטאָר</div>
 				<a href="#" class="home-link hidden" onclick="toGallery()">
-					<span class="material-icons">home</span>
+					<span class="material-icons home">home</span>
 				</a>
 			</div>
 		</header>
@@ -118,7 +118,7 @@
 											onclick="onLeftAlign(event)"
 											class="left-line-0"
 										>
-											<span class="material-icons">
+											<span class="material-icons left-line-0">
 												format_align_left
 											</span>
 										</button>
@@ -126,7 +126,7 @@
 											onclick="onCenterAlign(event)"
 											class="center-line-0"
 										>
-											<span class="material-icons">
+											<span class="material-icons center-line-0">
 												format_align_center
 											</span>
 										</button>
@@ -134,7 +134,7 @@
 											onclick="onRightAlign(event)"
 											class="right-line-0"
 										>
-											<span class="material-icons">
+											<span class="material-icons right-line-0">
 												format_align_right
 											</span>
 										</button>
@@ -146,6 +146,8 @@
 					<div class="additional-lines"></div>
 
 					<div class="inputs flex">
+
+						<!-- <input type="file" class="file-input btn" name="image" onchange="onImgInput(event)" /> -->
 						<div>
 						<form
 							action=""
@@ -155,7 +157,6 @@
 						>
 							<input name="img" id="imgData" type="hidden" />
 							<button class="btn" type="submit">Publish</button>
-							<!-- <a href="#" class="btn" onclick="downloadImg(this)" download="my-img.jpg">Download as jpeg</a> -->
 							<div class="share-container"></div>
 						</div>
 						<div>
@@ -186,8 +187,8 @@
 				</section>
 			</div>
 			
-			<div class="gallery-grid">
-				<div class="memes ">
+			<div class="gallery-grid flex">
+				<div class="memes  ">
 				<div class="additions">
 					<div class="search-bar">search bar placeholder</div>
 					<div class="tag-words">tag words placeholder</div>

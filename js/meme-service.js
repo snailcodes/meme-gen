@@ -85,10 +85,11 @@ function saveMemesToStorage() {
 
 function removeLine(id, lineNum) {
 	var meme = findMemeId(id);
-	meme.lines.splice(lineNum, 1);
+	// meme.lines.splice(lineNum, 1);
+	meme.lines[lineNum].txt = '';
 }
 
-//NOT CURR IN USE -  WILL USE IF INCLUDE SEARCH
+//NOT CURR IN USE -  TO USE IF INCLUDE SEARCH
 function displayMemes() {
 	return gMemes;
 }
@@ -117,7 +118,6 @@ function setHeight(id, lineNum, centerY, maxY) {
 }
 
 function updateMemeText(input, id, lineNum) {
-	// var meme = gMemes[id - 1];
 	var meme = findMemeId(id);
 	meme.lines[lineNum].txt = input;
 }
@@ -148,7 +148,9 @@ function changeFillCol(id, lineNum, color) {
 
 function changeAlign(id, lineNum, updatedAlign) {
 	var meme = findMemeId(id);
+	console.log(lineNum);
 	// meme.lines[lineNum].pos.x = updatedAlign;
+	console.log(meme.lines[lineNum]);
 	meme.lines[lineNum].align = updatedAlign;
 }
 
@@ -164,6 +166,7 @@ function getFillColor(memeId, lineNum) {
 
 function getText(memeId, lineNum) {
 	var meme = findMemeId(memeId);
+	if (!meme.lines[lineNum].txt) return;
 	return meme.lines[lineNum].txt;
 }
 
@@ -248,7 +251,6 @@ function setTextDrag() {
 	for (var i = 0; i < meme.lines.length; i++) {
 		meme.lines[i].isDrag = false;
 	}
-	// gCurrMemeText.isDrag = isDrag;
 }
 
 function moveText(dx, dy) {

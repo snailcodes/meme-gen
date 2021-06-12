@@ -9,11 +9,20 @@ html {
 body {
 	background-color: gainsboro;
 	border: 1px solid black;
+	height: 100%;
+}
+
+.material-icons {
+	font-size: 16px;
 }
 
 .home-link {
 	text-decoration: none;
 	color: white;
+}
+
+.home {
+	font-size: 24px;
 }
 
 header {
@@ -47,16 +56,17 @@ header {
 	max-width: 100%;
 	background-color: whitesmoke;
 	border-radius: 8px;
-	/* padding: 0.8rem; */
 	padding: auto 0;
-	/* margin-bottom: 1rem; */
+	height: 100%;
 }
 
 .memes {
 	/* margin: 15px; */
 	justify-items: center;
-	padding: 1em;
+	justify-content: center;
+	padding: auto;
 	text-align: left;
+	padding-inline-start: 20px;
 }
 
 img {
@@ -121,17 +131,7 @@ button {
 	line-height: 1em;
 	border-radius: 4px;
 }
-/* 
-.download-link {
-	margin-top: 10px;
-	background-color: whitesmoke;
-	border-radius: 8px;
-	color: black;
-	border: 1px solid black;
-	font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
-	text-decoration: none;
-	padding: 2px;
-} */
+
 .inputs {
 	margin-top: 10px;
 	background-color: whitesmoke;
@@ -213,10 +213,6 @@ select {
 	padding: 5px;
 }
 
-.material-icons {
-	font-size: 16px;
-}
-
 .main-editing-tools {
 	padding-bottom: 4px;
 }
@@ -234,6 +230,10 @@ select {
 	.editor {
 		max-width: 630px;
 		height: 60%;
+	}
+
+	.memes {
+		padding-inline-start: 30px;
 	}
 }
 
