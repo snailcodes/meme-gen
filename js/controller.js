@@ -7,8 +7,7 @@ var gCurrMemeId;
 const gTouchEvs = ['touchstart', 'touchmove', 'touchend'];
 var gStartPos;
 var gCenter;
-var gElMeme;
-// var gLineCounter = 1;
+var gMemeClassId;
 var gMemeImg;
 var gTextOb;
 
@@ -43,19 +42,20 @@ function memeEditor(elMeme) {
 	elContainer.classList.remove('hidden');
 	elHome.classList.remove('hidden');
 
-	gElMeme = elMeme;
-	gCurrMemeId = gElMeme.classList[1];
+	gMemeClassId = elMeme;
+	gCurrMemeId = gMemeClassId.classList[1];
 
 	gElCanvas = document.querySelector('.canvas');
 	gCtx = gElCanvas.getContext('2d');
-	resizeCanvas();
 	gCenter = { x: gElCanvas.width / 2, y: gElCanvas.height / 2 };
+	resizeCanvas();
 	drawImgFromSameDomain();
 	addListeners();
 }
 
 function renderCanvas() {
 	// gCtx.save();
+
 	drawImg();
 	renderText();
 	// gCtx.restore();
@@ -63,7 +63,7 @@ function renderCanvas() {
 
 function drawImgFromSameDomain() {
 	gMemeImg = new Image();
-	gMemeImg.src = gElMeme.src;
+	gMemeImg.src = gMemeClassId.src;
 
 	gMemeImg.onload = () => {
 		gCtx.drawImage(gMemeImg, 0, 0, gElCanvas.width, gElCanvas.height);
@@ -334,9 +334,16 @@ function getEvPos(ev) {
 }
 
 function resizeCanvas() {
+	console.log('canvas width start', gElCanvas.width);
+	console.log('canvas height', gElCanvas.height);
 	var elContainer = document.querySelector('.canvas-container');
-	gElCanvas.width = elContainer.offsetWidth;
-	gElCanvas.height = elContainer.offsetHeight;
+	console.log(elContainer);
+
+	var size = elContainer.offsetWidth;
+	gElCanvas.width = size;
+	gElCanvas.height = size;
+	console.log('canvas width end', gElCanvas.width);
+	console.log('canvas height', gElCanvas.height);
 	drawImg();
 }
 
@@ -417,13 +424,14 @@ function toGallery() {
 	elHome.classList.add('hidden');
 }
 
-function onImgInput(ev) {
-	loadImageFromInput(ev, renderImg);
-}
+// function onImgInput(ev) {
+// 	loadImageFromInput(ev, renderImg);
+// }
 
-function renderImg(img) {
-	gCtx.drawImage(img, 0, 0, gElCanvas.width, gElCanvas.height);
-}
+// function renderImg(img) {
+// 	console.log('drawing', gElCanvas.width, gElCanvas.height);
+// 	gCtx.drawImage(img, 0, 0, gElCanvas.width, gElCanvas.height);
+// }
 
 function loadImageFromInput(ev, onImageReady) {
 	document.querySelector('.share-container').innerHTML = '';

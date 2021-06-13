@@ -114,6 +114,12 @@ img {
 	width: 100%;
 }
 
+input {
+	border: none;
+	background-color: #f1f1f1;
+	margin: 0.5em;
+}
+
 .editing-text input {
 	/* height: 20px; */
 	width: 25px;
@@ -127,11 +133,13 @@ button {
 	border: none;
 	/* border-radius: 8px; */
 	border: 1px dotted rgb(67, 107, 107);
-	text-align: center;
-	font-size: 1.125em;
+	/* text-align: center; */
+	/* font-size: 1.125em; */
 	background-color: transparent;
 	line-height: 1em;
-	border-radius: 4px;
+	border-radius: px;
+	min-width: 3em;
+	min-height: 3em;
 }
 
 .inputs {
@@ -148,14 +156,21 @@ button {
 	flex-direction: row;
 }
 
+/* todo - what is the right way?*/
+
 .inputs a {
 	text-decoration: none;
 	color: black;
+	min-width: 3em;
+	min-height: 3em;
+	line-height: 3em;
+	/* margin: 1em auto; */
 }
 
 .inputs button {
 	font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
 	border: none;
+	font-size: 16px;
 }
 
 .editing-text {
@@ -203,8 +218,11 @@ footer .logo {
 
 select {
 	font-size: 0.9rem;
-	padding: 2px 5px;
-	width: 80px;
+	padding: 0 5px;
+	width: 6em;
+	margin: 5px 5px;
+	border: none;
+	background-color: #f1f1f1;
 }
 
 .text-line {
@@ -219,10 +237,13 @@ select {
 	padding-bottom: 4px;
 }
 
+.main-editing-tools button {
+	margin: 0.5em auto;
+}
+
 @media (min-width: 650px) {
 	.main-layout {
 		max-width: 650px;
-		/* height: 100%; */
 	}
 
 	.gallery-grid {
@@ -232,12 +253,15 @@ select {
 
 	.editor {
 		max-width: 630px;
-		/* height: 60%; */
 	}
 
 	.memes {
-		padding-inline-start: 30px;
-		/* height: 100%; */
+		padding-inline-start: 60px;
+	}
+
+	img {
+		width: 8em;
+		height: 8em;
 	}
 }
 
@@ -246,14 +270,48 @@ select {
 		max-width: 1060px;
 	}
 
+	.editor {
+		flex-direction: row;
+		flex-grow: 1;
+		max-width: 1000px;
+		gap: 30px;
+	}
+
+	.editor-control {
+		display: flex;
+		justify-content: space-evenly;
+		max-width: 800px;
+	}
+
+	.text-line {
+		flex-grow: 1;
+	}
+
 	.header {
 		height: 20px;
+	}
+
+	.canvas-container {
+		display: flex;
+		justify-content: center;
+		background-color: gainsboro;
 	}
 
 	.gallery-grid {
 		max-width: 1040px;
 		grid-template-columns: repeat(auto-fill, minmax(800px, 1fr));
 	}
+
+	img {
+		width: 10em;
+		height: 10em;
+	}
+
+	.memes {
+		padding-inline-start: 40px;
+	}
 }
 
-
+.logo {
+	font-family: system-ui;
+}
