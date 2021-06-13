@@ -27,25 +27,26 @@
 				</div>
 				<section class="editor-control flex">
 					<div class="text-lines">
-						<div class="text-line text-line-input-0">
+						<div class="text-line text-line-input">
 							<form>
 								<input
 									placeholder="Enter Text"
 									type="text"
-									value=""
-									class="input-line-0"
+									
+									class="input-line"
 									onkeydown="preventE(event)"
 								/>
 								<input
-									onclick="addText(event)"
+									onclick="addText()"
 									type="button"
 									value="Add Text"
-									class="input-btn-line-0"
+									class="input-btn"
 								/>
 							</form>
 
 							<div class="more-lines-controller flex hidden">
-								<button onclick="addTextLine()">
+								<!-- <button onclick="addTextLine()"> -->
+								<button onclick="addLine()">
 									<span class="material-icons">add</span>
 								</button>
 								<button onclick="onRemoveTextLine(event)">
@@ -59,7 +60,7 @@
 									<select
 										name="fonts-select"
 										class="input-line-0"
-										onchange="onChangeFont(event,value)"
+										onchange="onChangeFont(value)"
 									>
 										<option
 											value="Impact"
@@ -81,21 +82,21 @@
 
 									<button
 										class="increase-line-0"
-										onclick="onChangeSize(event,1)"
+										onclick="onChangeSize(1)"
 									>
 										⇑
 									</button>
 									<button
 										class="decrease-line-0"
-										onclick="onChangeSize(event,-1)"
+										onclick="onChangeSize(-1)"
 									>
 										⇓
 									</button>
 
 									<input
 										type="color"
-										onchange="onChangeLineColor(event)"
-										class="color-line-0"
+										onchange="onChangeLineColor()"
+										class="color-line"
 										value="#000000"
 									/>
 
@@ -104,8 +105,8 @@
 									</span>
 									<input
 										type="color"
-										onchange="onChangeFillColor(event)"
-										class="bcgColor-line-0"
+										onchange="onChangeFillColor()"
+										class="bcgColor-line"
 										value="#FFFFFF"
 									/>
 
@@ -115,26 +116,26 @@
 
 									<div class="align-text">
 										<button
-											onclick="onLeftAlign(event)"
-											class="left-line-0"
+											onclick="onLeftAlign()"
+											class="left-line"
 										>
-											<span class="material-icons left-line-0">
+											<span class="material-icons left-line">
 												format_align_left
 											</span>
 										</button>
 										<button
-											onclick="onCenterAlign(event)"
-											class="center-line-0"
+											onclick="onCenterAlign()"
+											class="center-line"
 										>
-											<span class="material-icons center-line-0">
+											<span class="material-icons center-line">
 												format_align_center
 											</span>
 										</button>
 										<button
-											onclick="onRightAlign(event)"
-											class="right-line-0"
+											onclick="onRightAlign()"
+											class="right-line"
 										>
-											<span class="material-icons right-line-0">
+											<span class="material-icons right-line">
 												format_align_right
 											</span>
 										</button>

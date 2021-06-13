@@ -17,7 +17,11 @@ function findMemeId(id) {
 
 function updateNewLine(id, centerPos) {
 	var meme = findMemeId(id);
+	var NumLine = meme.lines.length;
+	clearFocus(id);
 	var newline = {
+		lineNum: NumLine++,
+		isFocus: true,
 		txt: 'text',
 		isDrag: false,
 		size: 20,
@@ -34,7 +38,9 @@ function updateNewLine(id, centerPos) {
 			y: 250 + 20,
 		},
 	};
+	console.log(newline);
 	meme.lines.push(newline);
+	console.log(meme.lines);
 }
 
 function createMeme(imgNum) {
@@ -44,6 +50,8 @@ function createMeme(imgNum) {
 		imgSrc: 'img/' + imgNum + '.jpg',
 		lines: [
 			{
+				lineNum: 0,
+				isFocus: true,
 				txt: 'text',
 				isDrag: false,
 				size: 20,
@@ -110,7 +118,6 @@ function setHeight(id, lineNum, centerY, maxY) {
 			meme.lines[lineNum].pos.y = maxY - meme.lines[lineNum].size;
 			break;
 		default:
-			console.log('sanity');
 			meme.lines[lineNum].pos.y =
 				centerY + meme.lines[lineNum].size * lineNum;
 			break;
@@ -124,6 +131,7 @@ function updateMemeText(input, id, lineNum) {
 
 function updateSize(id, lineNum, diff) {
 	var meme = findMemeId(id);
+	console.log(meme.lines);
 	if (meme.lines[lineNum].size <= 0) return;
 	meme.lines[lineNum].size += diff;
 }
@@ -237,12 +245,25 @@ function textClicked(clickedPos) {
 			clickedPos.y < yEnd
 		) {
 			meme.lines[i].isDrag = true;
+			// meme.lines[i].isFocus = true;
+
+			updateFocus(i);
+
 			gCurrMemeText = meme.lines[i];
 			gCurrMemeLineNum = i;
 
 			return meme.lines[i];
 		} else console.log('caugt nobody');
 	}
+}
+
+function updateFocus(focusedLine) {
+	var id = getMeme();
+	var meme = findMemeId(id);
+	for (var i = 0; i < meme.lines.length; i++) {
+		meme.lines[i].isFocus = false;
+	}
+	meme.lines[focusedLine].isFocus = true;
 }
 
 function setTextDrag() {
@@ -261,4 +282,20 @@ function moveText(dx, dy) {
 function saveTxtBorder(x, y, width, height, lineNum, id) {
 	var meme = findMemeId(id);
 	meme.lines[lineNum].border = { x: x, y: y, width: width, height: height };
+}
+
+function getLatestLine(memeId) {
+	var meme = findMemeId(memeId);
+	return meme.lines.length - 1;
+}
+
+function isActive(memeId) {
+	var meme = findMemeId(memeId);
+	var lines = meme.lines;
+	return lines.find((line) => line.isFocus === true);
+}
+
+function clearFocus(memeId) {
+	var meme = findMemeId(memeId);
+	for (var i = 0; i < meme.lines.length; i++) meme.lines[i].isFocus = false;
 }

@@ -1,5 +1,6 @@
 'use strict';
 
+//TODO - GO OVER GLOBALS AND SEE WHICH IS NOT NEEDED
 var gElCanvas;
 var gCtx;
 var gCurrMemeId;
@@ -7,10 +8,9 @@ const gTouchEvs = ['touchstart', 'touchmove', 'touchend'];
 var gStartPos;
 var gCenter;
 var gElMeme;
-var gLineCounter = 1;
+// var gLineCounter = 1;
 var gMemeImg;
 var gTextOb;
-var gCurrLine;
 
 function init() {
 	createMemes();
@@ -86,79 +86,78 @@ function onRemoveTextLine(ev) {
 	// elControlLine.classList.add('hidden');
 }
 
-function addTextLine() {
-	var elTextSection = document.querySelector('.additional-lines');
+// function addTextLine() {
+// 	var elTextSection = document.querySelector('.additional-lines');
 
-	var strHTML = `<div class="text-line text-line-input-${gLineCounter}">
-                        <form>
-                            <input
-                                placeholder="Enter Text"
-                                type="text"
-                                class="input-line-${gLineCounter}"
-                                value=""
-                            />
-                            <input
-                                onclick="addText(event,${gLineCounter})"
-                                type="button"
-                                value="Add Text"
-                                class="input-btn-line-${gLineCounter}"
-                            />
-                        </form>
+// 	var strHTML = `<div class="text-line text-line-input-${gLineCounter}">
+//                         <form>
+//                             <input
+//                                 placeholder="Enter Text"
+//                                 type="text"
+//                                 class="input-line-${gLineCounter}"
+//                                 value=""
+//                             />
+//                             <input
+//                                 onclick="addText(event,${gLineCounter})"
+//                                 type="button"
+//                                 value="Add Text"
+//                                 class="input-btn-line-${gLineCounter}"
+//                             />
+//                         </form>
 
-                        <div class="more-lines-controller flex ">
-                        <button onclick="addTextLine()"><span class="material-icons">add</span></button>
-                        <button onclick="onRemoveTextLine(event)"><span class="material-icons delete-input-${gLineCounter}">delete</span></button>
-                        </div>
+//                         <div class="more-lines-controller flex ">
+//                         <button onclick="addTextLine()"><span class="material-icons">add</span></button>
+//                         <button onclick="onRemoveTextLine(event)"><span class="material-icons delete-input-${gLineCounter}">delete</span></button>
+//                         </div>
 
-                    <div class="editing-text">
-                    <select name="fonts-select" class="input-line-${gLineCounter}" onchange="onChangeFont(event,value)">
-                        <option value="Impact" selected="selected">Impact</option>
-                        <option value="Arial">Ariel</option>
-                        <option value="Montserrat">Montserrat</option>
-                        <option value="Comic Sans MS">Comic Sans MS</option>
-                        <option value="Segoe Script ">Segoe Script </option>
-                    </select> 
-                        <button class="increase-line-${gLineCounter}" onclick="onChangeSize(event,1)">⇑</button>
-                        <button class="decrease-line-${gLineCounter}" onclick="onChangeSize(event,-1)">⇓</button>
-                        
-                        <input type="color"
-                                onchange="onChangeLineColor(event)"
-                                class="color-line-${gLineCounter}"
-                                value="#000000">
-                                <span class="material-icons">
-                                border_color
-                            </span>
-                             </input>
-                            <input type="color"
-                                onchange="onChangeFillColor(event)"
-                                class="bcgColor-line-${gLineCounter}"
-                                value="#FFFFFF"
-                            >
-                            <span class="material-icons">
-                            format_color_fill
-                        </span>
-                        </input>
+//                     <div class="editing-text">
+//                     <select name="fonts-select" class="input-line-${gLineCounter}" onchange="onChangeFont(event,value)">
+//                         <option value="Impact" selected="selected">Impact</option>
+//                         <option value="Arial">Ariel</option>
+//                         <option value="Montserrat">Montserrat</option>
+//                         <option value="Comic Sans MS">Comic Sans MS</option>
+//                         <option value="Segoe Script ">Segoe Script </option>
+//                     </select>
+//                         <button class="increase-line-${gLineCounter}" onclick="onChangeSize(event,1)">⇑</button>
+//                         <button class="decrease-line-${gLineCounter}" onclick="onChangeSize(event,-1)">⇓</button>
 
-                        <div class="align-text">
-                        <button class="left-line-${gLineCounter}" onclick="onLeftAlign(event)"><span class="material-icons left-line-${gLineCounter}">
-                        format_align_left
-                    </span></button>
-                        <button class="center-line-${gLineCounter}" onclick="onCenterAlign(event)"><span class="material-icons center-line-${gLineCounter}">
-                        format_align_center
-                    </span></button> 
-                        <button class="right-line-${gLineCounter}" onclick="onRightAlign(event)"><span class="material-icons right-line-${gLineCounter}">
-                        format_align_right
-                    </span></button>
-                        </div>
+//                         <input type="color"
+//                                 onchange="onChangeLineColor(event)"
+//                                 class="color-line-${gLineCounter}"
+//                                 value="#000000">
+//                                 <span class="material-icons">
+//                                 border_color
+//                             </span>
+//                              </input>
+//                             <input type="color"
+//                                 onchange="onChangeFillColor(event)"
+//                                 class="bcgColor-line-${gLineCounter}"
+//                                 value="#FFFFFF"
+//                             >
+//                             <span class="material-icons">
+//                             format_color_fill
+//                         </span>
+//                         </input>
 
+//                         <div class="align-text">
+//                         <button class="left-line-${gLineCounter}" onclick="onLeftAlign(event)"><span class="material-icons left-line-${gLineCounter}">
+//                         format_align_left
+//                     </span></button>
+//                         <button class="center-line-${gLineCounter}" onclick="onCenterAlign(event)"><span class="material-icons center-line-${gLineCounter}">
+//                         format_align_center
+//                     </span></button>
+//                         <button class="right-line-${gLineCounter}" onclick="onRightAlign(event)"><span class="material-icons right-line-${gLineCounter}">
+//                         format_align_right
+//                     </span></button>
+//                         </div>
 
-                        </div>
-                    </div>`;
+//                         </div>
+//                     </div>`;
 
-	gLineCounter++;
-	updateNewLine(gCurrMemeId, gCenter);
-	elTextSection.innerHTML += strHTML;
-}
+// 	gLineCounter++;
+// 	updateNewLine(gCurrMemeId, gCenter);
+// 	elTextSection.innerHTML += strHTML;
+// }
 
 function getMeme() {
 	return gCurrMemeId;
@@ -177,20 +176,46 @@ function preventE(ev) {
 	}
 }
 
-function addText(ev) {
-	var lineNum = getLineNum(ev);
-	var str = '.input-line-' + lineNum;
-	var btnStr = '.input-btn-line-' + lineNum;
-	var input = document.querySelector(str);
-	var btn = document.querySelector(btnStr);
+// function addText(ev) {
+// 	var lineNum = getLineNum(ev);
+// 	var str = '.input-line-' + lineNum;
+// 	var btnStr = '.input-btn-line-' + lineNum;
+// 	var input = document.querySelector(str);
+// 	var btn = document.querySelector(btnStr);
 
+// 	setCenter(gCurrMemeId, lineNum, gCenter.x);
+// 	setHeight(gCurrMemeId, lineNum, gCenter.y, gElCanvas.height);
+// 	updateMemeText(input.value, gCurrMemeId, lineNum);
+
+// 	renderCanvas();
+// 	document.querySelector('.more-lines-controller').classList.remove('hidden');
+// 	btn.value = 'Update Text';
+// }
+
+function addLine() {
+	var input = document.querySelector('.input-line');
+	input.value = 'Enter Text';
+	console.log(input);
+	input.placeholder = 'Enter Text';
+
+	updateNewLine(gCurrMemeId, gCenter);
+}
+
+function addText() {
+	var lineNum = getLatestLine(gCurrMemeId);
+	updateFocus(lineNum);
+	// if (currLine === 0)
+
+	var input = document.querySelector('.input-line');
+
+	//check - setcenter and setHeight do not work
 	setCenter(gCurrMemeId, lineNum, gCenter.x);
 	setHeight(gCurrMemeId, lineNum, gCenter.y, gElCanvas.height);
 	updateMemeText(input.value, gCurrMemeId, lineNum);
 
 	renderCanvas();
 	document.querySelector('.more-lines-controller').classList.remove('hidden');
-	btn.value = 'Update Text';
+	// btn.value = 'Update Text';
 }
 
 function renderText() {
@@ -271,6 +296,7 @@ function onDown(ev) {
 	if (!gTextOb) return;
 	console.log(gTextOb);
 	gStartPos = pos;
+
 	document.body.style.cursor = 'grabbing';
 }
 
@@ -314,49 +340,60 @@ function resizeCanvas() {
 	drawImg();
 }
 
-function onChangeSize(ev, diff) {
-	console.log(ev);
-	var lineNum = getLineNum(ev);
-
-	updateSize(gCurrMemeId, lineNum, diff);
+function onChangeSize(diff) {
+	var activeLine = isActive(gCurrMemeId);
+	// console.log(activeLine);
+	console.log(gCurrMemeId, activeLine.lineNum, diff);
+	updateSize(gCurrMemeId, activeLine.lineNum, diff);
 	renderCanvas();
 }
 
-function onChangeFont(ev, value) {
-	var lineNum = getLineNum(ev);
-	updateFont(gCurrMemeId, lineNum, value);
+function onChangeFont(value) {
+	// var lineNum = getLineNum(ev);
+	var activeLine = isActive(gCurrMemeId);
+	// console.log(activeLine);
+	updateFont(gCurrMemeId, activeLine.lineNum, value);
 	renderCanvas();
 }
 
-function onChangeLineColor(ev) {
-	var lineNum = getLineNum(ev);
-	var className = '.color-line-' + lineNum;
-	var lineColor = document.querySelector(className);
-	changeLineCol(gCurrMemeId, lineNum, lineColor.value);
+function onChangeLineColor() {
+	// var lineNum = getLineNum(ev);
+	var activeLine = isActive(gCurrMemeId);
+
+	// var className = '.color-line-' + lineNum;
+	var lineColor = document.querySelector('.color-line');
+	changeLineCol(gCurrMemeId, activeLine.lineNum, lineColor.value);
 	renderCanvas();
 }
 
-function onChangeFillColor(ev) {
-	var lineNum = getLineNum(ev);
-	var className = '.bcgColor-line-' + lineNum;
-	var fillColor = document.querySelector(className);
-	changeFillCol(gCurrMemeId, lineNum, fillColor.value);
+function onChangeFillColor() {
+	// var lineNum = getLineNum(ev);
+	var activeLine = isActive(gCurrMemeId);
+
+	// var className = '.bcgColor-line-' + lineNum;
+	var fillColor = document.querySelector('.bcgColor-line');
+	changeFillCol(gCurrMemeId, activeLine.lineNum, fillColor.value);
 	renderCanvas();
 }
 
-function onRightAlign(ev) {
-	var lineNum = getLineNum(ev);
-	changeAlign(gCurrMemeId, lineNum, 'left');
+function onRightAlign() {
+	var activeLine = isActive(gCurrMemeId);
+	// var lineNum = getLineNum(ev);
+	changeAlign(gCurrMemeId, activeLine.lineNum, 'left');
 	renderCanvas();
 }
-function onCenterAlign(ev) {
-	var lineNum = getLineNum(ev);
-	changeAlign(gCurrMemeId, lineNum, 'center');
+function onCenterAlign() {
+	var activeLine = isActive(gCurrMemeId);
+
+	// var lineNum = getLineNum(ev);
+	changeAlign(gCurrMemeId, activeLine.lineNum, 'center');
 	renderCanvas();
 }
-function onLeftAlign(ev) {
-	var lineNum = getLineNum(ev);
-	changeAlign(gCurrMemeId, lineNum, 'right');
+function onLeftAlign() {
+	var activeLine = isActive(gCurrMemeId);
+
+	// var lineNum = getLineNum(ev);
+	changeAlign(gCurrMemeId, activeLine.lineNum, 'right');
 	renderCanvas();
 }
 
