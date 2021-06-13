@@ -51,7 +51,7 @@ function createMeme(imgNum) {
 		lines: [
 			{
 				lineNum: 0,
-				isFocus: true,
+				isFocus: false,
 				txt: 'text',
 				isDrag: false,
 				size: 20,
@@ -104,18 +104,21 @@ function displayMemes() {
 
 function setCenter(id, lineNum, centerX) {
 	var meme = findMemeId(id);
-	meme.lines[lineNum].pos.x = centerX - meme.lines[lineNum].size;
+	meme.lines[lineNum].pos.x = centerX + meme.lines[lineNum].size / 2;
 }
 
 function setHeight(id, lineNum, centerY, maxY) {
 	var meme = findMemeId(id);
+
 	switch (lineNum) {
-		case '0':
-			var newYPos = 0 + meme.lines[lineNum].size;
-			meme.lines[lineNum].pos.y = newYPos;
+		case 0:
+			meme.lines[lineNum].pos.y = meme.lines[lineNum].size;
 			break;
-		case '1':
-			meme.lines[lineNum].pos.y = maxY - meme.lines[lineNum].size;
+		case 1:
+			meme.lines[lineNum].pos.y = maxY - meme.lines[lineNum].size * 2;
+			break;
+		case 3:
+			meme.lines[lineNum].pos.y = centerY;
 			break;
 		default:
 			meme.lines[lineNum].pos.y =
@@ -292,10 +295,20 @@ function getLatestLine(memeId) {
 function isActive(memeId) {
 	var meme = findMemeId(memeId);
 	var lines = meme.lines;
+	console.log(lines);
 	return lines.find((line) => line.isFocus === true);
 }
 
 function clearFocus(memeId) {
 	var meme = findMemeId(memeId);
 	for (var i = 0; i < meme.lines.length; i++) meme.lines[i].isFocus = false;
+}
+
+function updateTextPos(memeId, pos) {
+	var meme = findMemeId(memeId);
+	var draggedLine = meme.lines.find((line) => line.isDrag);
+	if (!draggedLine) return;
+	draggedLine.pos.x = pos.x;
+	draggedLine.pos.y = pos.y;
+	console.log(draggedLine);
 }

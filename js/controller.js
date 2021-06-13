@@ -50,6 +50,7 @@ function memeEditor(elMeme) {
 	gCenter = { x: gElCanvas.width / 2, y: gElCanvas.height / 2 };
 	resizeCanvas();
 	drawImgFromSameDomain();
+
 	addListeners();
 }
 
@@ -86,79 +87,6 @@ function onRemoveTextLine(ev) {
 	// elControlLine.classList.add('hidden');
 }
 
-// function addTextLine() {
-// 	var elTextSection = document.querySelector('.additional-lines');
-
-// 	var strHTML = `<div class="text-line text-line-input-${gLineCounter}">
-//                         <form>
-//                             <input
-//                                 placeholder="Enter Text"
-//                                 type="text"
-//                                 class="input-line-${gLineCounter}"
-//                                 value=""
-//                             />
-//                             <input
-//                                 onclick="addText(event,${gLineCounter})"
-//                                 type="button"
-//                                 value="Add Text"
-//                                 class="input-btn-line-${gLineCounter}"
-//                             />
-//                         </form>
-
-//                         <div class="more-lines-controller flex ">
-//                         <button onclick="addTextLine()"><span class="material-icons">add</span></button>
-//                         <button onclick="onRemoveTextLine(event)"><span class="material-icons delete-input-${gLineCounter}">delete</span></button>
-//                         </div>
-
-//                     <div class="editing-text">
-//                     <select name="fonts-select" class="input-line-${gLineCounter}" onchange="onChangeFont(event,value)">
-//                         <option value="Impact" selected="selected">Impact</option>
-//                         <option value="Arial">Ariel</option>
-//                         <option value="Montserrat">Montserrat</option>
-//                         <option value="Comic Sans MS">Comic Sans MS</option>
-//                         <option value="Segoe Script ">Segoe Script </option>
-//                     </select>
-//                         <button class="increase-line-${gLineCounter}" onclick="onChangeSize(event,1)">⇑</button>
-//                         <button class="decrease-line-${gLineCounter}" onclick="onChangeSize(event,-1)">⇓</button>
-
-//                         <input type="color"
-//                                 onchange="onChangeLineColor(event)"
-//                                 class="color-line-${gLineCounter}"
-//                                 value="#000000">
-//                                 <span class="material-icons">
-//                                 border_color
-//                             </span>
-//                              </input>
-//                             <input type="color"
-//                                 onchange="onChangeFillColor(event)"
-//                                 class="bcgColor-line-${gLineCounter}"
-//                                 value="#FFFFFF"
-//                             >
-//                             <span class="material-icons">
-//                             format_color_fill
-//                         </span>
-//                         </input>
-
-//                         <div class="align-text">
-//                         <button class="left-line-${gLineCounter}" onclick="onLeftAlign(event)"><span class="material-icons left-line-${gLineCounter}">
-//                         format_align_left
-//                     </span></button>
-//                         <button class="center-line-${gLineCounter}" onclick="onCenterAlign(event)"><span class="material-icons center-line-${gLineCounter}">
-//                         format_align_center
-//                     </span></button>
-//                         <button class="right-line-${gLineCounter}" onclick="onRightAlign(event)"><span class="material-icons right-line-${gLineCounter}">
-//                         format_align_right
-//                     </span></button>
-//                         </div>
-
-//                         </div>
-//                     </div>`;
-
-// 	gLineCounter++;
-// 	updateNewLine(gCurrMemeId, gCenter);
-// 	elTextSection.innerHTML += strHTML;
-// }
-
 function getMeme() {
 	return gCurrMemeId;
 }
@@ -172,28 +100,14 @@ function getLineNum(ev) {
 function preventE(ev) {
 	if (ev.keyCode === 13) {
 		ev.preventDefault();
-		addText(ev);
+		addText();
 	}
 }
 
-// function addText(ev) {
-// 	var lineNum = getLineNum(ev);
-// 	var str = '.input-line-' + lineNum;
-// 	var btnStr = '.input-btn-line-' + lineNum;
-// 	var input = document.querySelector(str);
-// 	var btn = document.querySelector(btnStr);
-
-// 	setCenter(gCurrMemeId, lineNum, gCenter.x);
-// 	setHeight(gCurrMemeId, lineNum, gCenter.y, gElCanvas.height);
-// 	updateMemeText(input.value, gCurrMemeId, lineNum);
-
-// 	renderCanvas();
-// 	document.querySelector('.more-lines-controller').classList.remove('hidden');
-// 	btn.value = 'Update Text';
-// }
-
 function addLine() {
 	var input = document.querySelector('.input-line');
+	var addInputBtn = document.querySelector('.input-btn');
+	addInputBtn.value = 'Add Text';
 	input.value = 'Enter Text';
 	console.log(input);
 	input.placeholder = 'Enter Text';
@@ -202,15 +116,19 @@ function addLine() {
 }
 
 function addText() {
-	var lineNum = getLatestLine(gCurrMemeId);
-	updateFocus(lineNum);
-	// if (currLine === 0)
-
+	var inputBtn = document.querySelector('.input-btn');
 	var input = document.querySelector('.input-line');
 
-	//check - setcenter and setHeight do not work
-	setCenter(gCurrMemeId, lineNum, gCenter.x);
-	setHeight(gCurrMemeId, lineNum, gCenter.y, gElCanvas.height);
+	var lineNum = getLatestLine(gCurrMemeId);
+	console.log(inputBtn.value);
+	if (inputBtn.value === 'Add Text') {
+		console.log('sanity');
+		setCenter(gCurrMemeId, lineNum, gCenter.x);
+		setHeight(gCurrMemeId, lineNum, gCenter.y, gElCanvas.height);
+	}
+	inputBtn.value = 'Update Text';
+
+	updateFocus(lineNum);
 	updateMemeText(input.value, gCurrMemeId, lineNum);
 
 	renderCanvas();
@@ -253,7 +171,7 @@ function drawText(
 	align,
 	idx
 ) {
-	var recHeight = fontSize * 3;
+	var recHeight = fontSize * 4;
 	recHeight = parseInt(recHeight);
 	gCtx.lineWidth = 1;
 	gCtx.strokeStyle = `${fontColor}`;
@@ -296,6 +214,8 @@ function onDown(ev) {
 	if (!gTextOb) return;
 	console.log(gTextOb);
 	gStartPos = pos;
+	var inputBtn = document.querySelector('.input-btn');
+	inputBtn.value = 'Update Text';
 
 	document.body.style.cursor = 'grabbing';
 }
@@ -312,9 +232,13 @@ function onMove(ev) {
 	}
 }
 
-function onUp() {
+function onUp(ev) {
+	const pos = getEvPos(ev);
+	console.log(pos);
+	updateTextPos(gCurrMemeId, pos);
 	setTextDrag(false);
 	document.body.style.cursor = 'grab';
+	renderCanvas();
 }
 
 function getEvPos(ev) {
@@ -334,23 +258,20 @@ function getEvPos(ev) {
 }
 
 function resizeCanvas() {
-	console.log('canvas width start', gElCanvas.width);
-	console.log('canvas height', gElCanvas.height);
 	var elContainer = document.querySelector('.canvas-container');
-	console.log(elContainer);
 
 	var size = elContainer.offsetWidth;
 	gElCanvas.width = size;
 	gElCanvas.height = size;
-	console.log('canvas width end', gElCanvas.width);
-	console.log('canvas height', gElCanvas.height);
 	drawImg();
 }
 
 function onChangeSize(diff) {
 	var activeLine = isActive(gCurrMemeId);
+	if (!activeLine) return;
 	// console.log(activeLine);
-	console.log(gCurrMemeId, activeLine.lineNum, diff);
+	// console.log(activeLine);
+	// console.log(gCurrMemeId, activeLine.lineNum, diff);
 	updateSize(gCurrMemeId, activeLine.lineNum, diff);
 	renderCanvas();
 }
