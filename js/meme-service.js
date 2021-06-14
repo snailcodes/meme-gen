@@ -207,8 +207,10 @@ function getSize(memeId, lineNum) {
 	return meme.lines[lineNum].size;
 }
 
+// found bug
 function getPos(memeId, lineNum) {
 	var meme = findMemeId(memeId);
+	console.log('get pos', meme.lines[lineNum].pos);
 	return meme.lines[lineNum].pos;
 }
 
@@ -269,7 +271,7 @@ function updateFocus(focusedLine) {
 	meme.lines[focusedLine].isFocus = true;
 }
 
-function setTextDrag() {
+function resetTextDrag() {
 	var id = getMeme();
 	var meme = findMemeId(id);
 	for (var i = 0; i < meme.lines.length; i++) {
@@ -283,6 +285,7 @@ function moveText(dx, dy) {
 }
 
 function saveTxtBorder(x, y, width, height, lineNum, id) {
+	// console.log(x, y, width, height, lineNum, id);
 	var meme = findMemeId(id);
 	meme.lines[lineNum].border = { x: x, y: y, width: width, height: height };
 }
@@ -310,5 +313,5 @@ function updateTextPos(memeId, pos) {
 	if (!draggedLine) return;
 	draggedLine.pos.x = pos.x;
 	draggedLine.pos.y = pos.y;
-	console.log(draggedLine);
+	console.log('draggedline', draggedLine.pos);
 }

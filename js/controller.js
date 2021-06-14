@@ -1,10 +1,10 @@
 'use strict';
 
-//TODO - GO OVER GLOBALS AND SEE WHICH IS NOT NEEDED
 var gElCanvas;
 var gCtx;
-var gCurrMemeId;
 const gTouchEvs = ['touchstart', 'touchmove', 'touchend'];
+
+var gCurrMemeId;
 var gStartPos;
 var gCenter;
 var gMemeClassId;
@@ -44,7 +44,7 @@ function memeEditor(elMeme) {
 
 	gMemeClassId = elMeme;
 	gCurrMemeId = gMemeClassId.classList[1];
-
+	// console.log(gMemeClassId, gCurrMemeId);
 	gElCanvas = document.querySelector('.canvas');
 	gCtx = gElCanvas.getContext('2d');
 	gCenter = { x: gElCanvas.width / 2, y: gElCanvas.height / 2 };
@@ -108,7 +108,7 @@ function addLine() {
 	var input = document.querySelector('.input-line');
 	var addInputBtn = document.querySelector('.input-btn');
 	addInputBtn.value = 'Add Text';
-	input.value = 'Enter Text';
+	// input.value = 'Enter Text';
 	console.log(input);
 	input.placeholder = 'Enter Text';
 
@@ -132,6 +132,8 @@ function addText() {
 	updateMemeText(input.value, gCurrMemeId, lineNum);
 
 	renderCanvas();
+	input.value = '';
+
 	document.querySelector('.more-lines-controller').classList.remove('hidden');
 	// btn.value = 'Update Text';
 }
@@ -146,6 +148,7 @@ function renderText() {
 		var fontColor = getLineColor(gCurrMemeId, i);
 		var fontFam = getFont(gCurrMemeId, i);
 		var align = getAlign(gCurrMemeId, i);
+		console.log('render pox', pos);
 		drawText(
 			text,
 			pos.x,
@@ -171,7 +174,7 @@ function drawText(
 	align,
 	idx
 ) {
-	var recHeight = fontSize * 4;
+	var recHeight = fontSize;
 	recHeight = parseInt(recHeight);
 	gCtx.lineWidth = 1;
 	gCtx.strokeStyle = `${fontColor}`;
@@ -213,6 +216,7 @@ function onDown(ev) {
 	gTextOb = textClicked(pos);
 	if (!gTextOb) return;
 	console.log(gTextOb);
+	console.log('hand:', gStartPos, pos);
 	gStartPos = pos;
 	var inputBtn = document.querySelector('.input-btn');
 	inputBtn.value = 'Update Text';
@@ -226,6 +230,7 @@ function onMove(ev) {
 		const pos = getEvPos(ev);
 		const dx = pos.x - gStartPos.x;
 		const dy = pos.y - gStartPos.y;
+		console.log(dx, dy);
 		moveText(dx, dy);
 		gStartPos = pos;
 		renderCanvas();
@@ -236,7 +241,7 @@ function onUp(ev) {
 	const pos = getEvPos(ev);
 	console.log(pos);
 	updateTextPos(gCurrMemeId, pos);
-	setTextDrag(false);
+	resetTextDrag(false);
 	document.body.style.cursor = 'grab';
 	renderCanvas();
 }
@@ -246,6 +251,7 @@ function getEvPos(ev) {
 		x: ev.offsetX,
 		y: ev.offsetY,
 	};
+	console.log('offsetpos', pos);
 	if (gTouchEvs.includes(ev.type)) {
 		ev.preventDefault();
 		ev = ev.changedTouches[0];
@@ -253,6 +259,7 @@ function getEvPos(ev) {
 			x: ev.pageX - ev.target.offsetLeft - ev.target.clientLeft,
 			y: ev.pageY - ev.target.offsetTop - ev.target.clientTop,
 		};
+		console.log('thispos', pos);
 	}
 	return pos;
 }
