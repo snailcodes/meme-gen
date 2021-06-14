@@ -126,6 +126,9 @@ input {
 	/* border: 1px solid rgb(67, 107, 107); */
 	border: none;
 	border-radius: 4px;
+	margin-left: 0;
+	margin-right: 0;
+	/* margin-top: 20px; */
 }
 
 button {
@@ -182,7 +185,7 @@ button:hover {
 .inputs a:hover {
 	background-color: #ff7f00;
 	color: white;
-	padding: 12px;
+	/* padding: 12px; */
 	border-radius: 8px;
 }
 
@@ -190,6 +193,7 @@ button:hover {
 	font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
 	border: none;
 	font-size: 16px;
+	margin-top: 6px;
 }
 
 .editing-text {
@@ -258,10 +262,13 @@ select {
 
 .main-editing-tools {
 	padding-bottom: 4px;
+	width: 100%;
 }
 
 .main-editing-tools button {
 	margin: 0.5em auto;
+	background-color: white;
+	width: 1.875em;
 }
 
 @media (min-width: 650px) {

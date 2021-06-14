@@ -23,7 +23,7 @@
 		<main class="main-container main-layout flex">
 			<div class="editor hidden flex">
 				<div class="canvas-container hidden main-layout">
-					<canvas class="canvas" width="600" height="600"></canvas>
+					<canvas class="canvas" width="550" height="550"></canvas>
 				</div>
 				<section class="editor-control flex">
 					<div class="text-lines">
@@ -48,7 +48,7 @@
 									<span class="material-icons">add</span>
 								</button>
 								<button onclick="onRemoveTextLine(event)">
-									<span class="material-icons delete-input-0">
+									<span class="material-icons delete-input">
 										delete
 									</span>
 								</button>
@@ -90,24 +90,24 @@
 									>
 										⇓
 									</button>
+									 
+										<input
+											type="color"
+											onchange="onChangeLineColor()"
+											class="color-line"
+											value="#000000"
+										/>
 
-									<input
-										type="color"
-										onchange="onChangeLineColor()"
-										class="color-line"
-										value="#000000"
-									/>
-
-									<span class="material-icons">
-										border_color
-									</span>
-									<input
-										type="color"
-										onchange="onChangeFillColor()"
-										class="bcgColor-line"
-										value="#FFFFFF"
-									/>
-
+										<span class="material-icons">
+											border_color
+										</span>
+										<input
+											type="color"
+											onchange="onChangeFillColor()"
+											class="bcgColor-line"
+											value="#FFFFFF"
+										/>
+								 
 									<span class="material-icons">
 										format_color_fill
 									</span>
@@ -156,10 +156,10 @@
 					</div>
 					<div class="additional-lines"></div>
 
-					<!-- <div class="inputs flex">
+					 <div class="inputs flex">
 
-						<!-- <input type="file" class="file-input btn" name="image" onchange="onImgInput(event)" /> -->
-					<!-- <div>
+						<!-- <input type="file" class="file-input btn" name="image" onchange="onImgInput(event)" />  -->
+					  <div>
 						<form
 							action=""
 							method="POST"
@@ -170,7 +170,8 @@
 							<button class="btn" type="submit">Publish</button>
 							<div class="share-container"></div>
 						</div>
-						<div>
+	
+							
 							<a
 								href="#"
 								class="download-link"
@@ -182,19 +183,11 @@
 									file_download
 								</span>
 							</a>
-							</div>
-						</form> -->
-					<!-- </div>  -->
-
-					<!-- <a
-						href="#"
-						class="download-link"
-						onclick="downloadCanvas(this)"
-						download="file-name"
-					>
-						Download
-						<span class="material-icons">file_download</span>
-					</a> -->
+							
+						</form>  
+					  </div>   
+					
+				
 				</section>
 			</div>
 
